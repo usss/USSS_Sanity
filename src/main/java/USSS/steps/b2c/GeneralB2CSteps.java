@@ -1,17 +1,11 @@
 package USSS.steps.b2c;
 
-import USSS.Utils.DataBaseUtils;
-import USSS.Utils.ReadConfiguration;
 import USSS.pages.b2c.LoginB2CPage;
-import USSS.pages.b2c.prep.ProfilePage;
-import USSS.pages.b2c.prep.TariffsListPage;
+import USSS.pages.b2c.ProfileB2CPage;
+import USSS.pages.b2c.TariffsListB2CPage;
 import USSS.steps.GeneralSteps;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.pages.Pages;
-import net.thucydides.core.steps.ScenarioSteps;
-
-import java.io.IOException;
-import java.sql.SQLException;
 
 public abstract class GeneralB2CSteps extends GeneralSteps {
     public GeneralB2CSteps(Pages pages) {super(pages); }
@@ -24,12 +18,12 @@ public abstract class GeneralB2CSteps extends GeneralSteps {
     }
     @Step
     public void logout(){
-        TariffsListPage tariffsListPage = getPages().get(TariffsListPage.class);
+        TariffsListB2CPage tariffsListPage = getPages().get(TariffsListB2CPage.class);
         tariffsListPage.headerMenu.logOut();
     }
     @Step
     public void open_tariff_list(){
-        ProfilePage profilePage = getPages().get(ProfilePage.class);
+        ProfileB2CPage profilePage = getPages().get(ProfileB2CPage.class);
         profilePage.openTariffs();
     }
 

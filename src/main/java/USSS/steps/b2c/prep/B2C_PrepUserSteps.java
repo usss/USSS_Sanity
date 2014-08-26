@@ -5,16 +5,11 @@ import USSS.Utils.ReadConfiguration;
 import USSS.pages.Exceptions.ChangeTariffFailException;
 import USSS.pages.Exceptions.IncorrectListTariffsException;
 import USSS.pages.Exceptions.InsufficientComverseBalanceException;
-import USSS.pages.b2c.LoginB2CPage;
-import USSS.pages.b2c.prep.ProfilePage;
-import USSS.pages.b2c.prep.TariffsListPage;
-import USSS.steps.GeneralSteps;
+import USSS.pages.b2c.prep.TariffsListB2CPrepPage;
 import USSS.steps.b2c.GeneralB2CSteps;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.annotations.StepGroup;
-import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.pages.Pages;
-import net.thucydides.core.steps.ScenarioSteps;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -26,7 +21,7 @@ public class B2C_PrepUserSteps extends GeneralB2CSteps {
 
     @Step
     public void check_display_tariffs() throws IOException, SQLException, ClassNotFoundException {
-        TariffsListPage tariffsListPage = getPages().get(TariffsListPage.class);
+        TariffsListB2CPrepPage tariffsListPage = getPages().get(TariffsListB2CPrepPage.class);
         List<String> listTariffs = tariffsListPage.getListTariffs();
         ReadConfiguration conf = new ReadConfiguration("BSSDB.properties");
         DataBaseUtils db = new DataBaseUtils(conf.getDataBase(), conf.getHost(), conf.getPort(),conf.getUserName(), conf.getUserPass());
@@ -78,7 +73,7 @@ public class B2C_PrepUserSteps extends GeneralB2CSteps {
     }
     @Step
     public void change_tariff(){
-        TariffsListPage tariffsListPage = getPages().get(TariffsListPage.class);
+        TariffsListB2CPrepPage tariffsListPage = getPages().get(TariffsListB2CPrepPage.class);
         List<String> listTariffs = tariffsListPage.getListTariffs();
         Random rand = new Random();
         String tariffName = listTariffs.get(rand.nextInt(listTariffs.size()));
@@ -86,13 +81,13 @@ public class B2C_PrepUserSteps extends GeneralB2CSteps {
     }
     @Step
     public void change_tariff(String tariffName){
-        TariffsListPage tariffsListPage = getPages().get(TariffsListPage.class);
+        TariffsListB2CPrepPage tariffsListPage = getPages().get(TariffsListB2CPrepPage.class);
         tariffsListPage.changeTariff(tariffName);
     }
     @Step
     public void change_tariff_with_negative_balance(String tariffName){
         try {
-            TariffsListPage tariffsListPage = getPages().get(TariffsListPage.class);
+            TariffsListB2CPrepPage tariffsListPage = getPages().get(TariffsListB2CPrepPage.class);
             tariffsListPage.changeTariff(tariffName);
             throw new InsufficientComverseBalanceException("Успешный переход на тариф [" + tariffName +"] при отрицательном балансе!");
         }catch (InsufficientComverseBalanceException e){
@@ -101,7 +96,7 @@ public class B2C_PrepUserSteps extends GeneralB2CSteps {
     }
     @Step
     public void change_tariff_with_negative_balance(){
-        TariffsListPage tariffsListPage = getPages().get(TariffsListPage.class);
+        TariffsListB2CPrepPage tariffsListPage = getPages().get(TariffsListB2CPrepPage.class);
         List<String> listTariffs = tariffsListPage.getListTariffs();
         Random rand = new Random();
         String tariffName = listTariffs.get(rand.nextInt(listTariffs.size()));
@@ -115,7 +110,7 @@ public class B2C_PrepUserSteps extends GeneralB2CSteps {
     @Step
     public void check_tariff_change(String tariffName){
         open_tariff_list();
-        TariffsListPage tariffsListPage = getPages().get(TariffsListPage.class);
+        TariffsListB2CPrepPage tariffsListPage = getPages().get(TariffsListB2CPrepPage.class);
         String currentTariff = tariffsListPage.getCurrentTariff();
         if(!currentTariff.contains(tariffName))
             throw new ChangeTariffFailException("Ошибка смены тарифа [" + currentTariff + "] на тариф [" + tariffName + "]");
@@ -132,7 +127,7 @@ public class B2C_PrepUserSteps extends GeneralB2CSteps {
     @StepGroup
     public void change_tariff_and_check_change(String login, String password) throws SQLException, IOException, ClassNotFoundException, InterruptedException {
 
-        TariffsListPage tariffsListPage = getPages().get(TariffsListPage.class);
+        TariffsListB2CPrepPage tariffsListPage = getPages().get(TariffsListB2CPrepPage.class);
         List<String> listTariffs = tariffsListPage.getListTariffs();
         Random rand = new Random();
         String tariffName = listTariffs.get(rand.nextInt(listTariffs.size()));

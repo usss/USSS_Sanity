@@ -2,7 +2,7 @@ package USSS.pages.b2c.prep;
 
 import USSS.pages.Exceptions.InsufficientComverseBalanceException;
 import USSS.pages.Exceptions.TariffNotFoundException;
-import USSS.pages.b2c.AbstractTariffListPage;
+import USSS.pages.b2c.TariffsListB2CPage;
 import net.thucydides.core.pages.WebElementFacade;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -13,8 +13,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import static net.thucydides.core.webdriver.ThucydidesWebDriverSupport.getPages;
 
 
-public class TariffsListPage extends AbstractTariffListPage {
-    public TariffsListPage(WebDriver driver) {
+public class TariffsListB2CPrepPage extends TariffsListB2CPage {
+    public TariffsListB2CPrepPage(WebDriver driver) {
         super(driver);
     }
 

@@ -26,6 +26,7 @@ public class ChangeTariff_B2C_PrepTest {
     @ManagedPages(defaultUrl = "http://dev-web01:23001")
     public Pages pages;
 
+    @Steps
     B2C_PrepUserSteps B2CSteps;
 
     @Test

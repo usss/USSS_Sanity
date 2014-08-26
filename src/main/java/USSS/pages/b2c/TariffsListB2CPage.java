@@ -12,8 +12,8 @@ import java.util.List;
 import static ch.lambdaj.Lambda.extract;
 import static ch.lambdaj.Lambda.on;
 
-public abstract class AbstractTariffListPage extends BlockPageObject {
-    public AbstractTariffListPage(WebDriver driver) {
+public class TariffsListB2CPage extends BlockPageObject {
+    public TariffsListB2CPage(WebDriver driver) {
         super(driver);
     }
     @FindBy(xpath = "//div[@class = 'header-inner']")
