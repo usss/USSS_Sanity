@@ -26,11 +26,6 @@ public class ChangeTariff_B2C_PrepTest {
     @ManagedPages(defaultUrl = "http://dev-web01:23001")
     public Pages pages;
 
-    @Steps
-    GeneralSteps generalSteps;
-    @Steps
-    GeneralB2CSteps generalB2CSteps;
-    @Steps
     B2C_PrepUserSteps B2CSteps;
 
     @Test
@@ -39,11 +34,11 @@ public class ChangeTariff_B2C_PrepTest {
         String login = "sel_9687013119_pre";
         String password = "FRol370026vf";
 
-        generalB2CSteps.authorization(login, password);
-        generalB2CSteps.open_tariff_list();
+        B2CSteps.authorization(login, password);
+        B2CSteps.open_tariff_list();
         B2CSteps.check_display_tariffs();
         B2CSteps.change_tariff_and_check_change(login,password);
-        generalB2CSteps.logout();
+        B2CSteps.logout();
     }
     @Test
     public void change_tariff_with_negative_balance(){
@@ -51,9 +46,9 @@ public class ChangeTariff_B2C_PrepTest {
         String login = "9687013118";
         String password = "Qwerty4$";
 
-        generalB2CSteps.authorization(login, password);
-        generalB2CSteps.open_tariff_list();
+        B2CSteps.authorization(login, password);
+        B2CSteps.open_tariff_list();
         B2CSteps.change_tariff_with_negative_balance();
-        generalB2CSteps.logout();
+        B2CSteps.logout();
     }
 }

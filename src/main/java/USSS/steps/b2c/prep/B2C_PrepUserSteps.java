@@ -20,14 +20,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
 
-public class B2C_PrepUserSteps extends ScenarioSteps {
+public class B2C_PrepUserSteps extends GeneralB2CSteps {
 
     public B2C_PrepUserSteps(Pages pages) {super(pages); }
-
-    @Steps
-    GeneralSteps generalSteps;
-    @Steps
-    GeneralB2CSteps generalB2CSteps;
 
     @Step
     public void check_display_tariffs() throws IOException, SQLException, ClassNotFoundException {
@@ -119,7 +114,7 @@ public class B2C_PrepUserSteps extends ScenarioSteps {
     }
     @Step
     public void check_tariff_change(String tariffName){
-        generalB2CSteps.open_tariff_list();
+        open_tariff_list();
         TariffsListPage tariffsListPage = getPages().get(TariffsListPage.class);
         String currentTariff = tariffsListPage.getCurrentTariff();
         if(!currentTariff.contains(tariffName))
@@ -128,10 +123,10 @@ public class B2C_PrepUserSteps extends ScenarioSteps {
     @StepGroup
     public void change_tariff_and_check_change(String login, String password, String tariffName) throws SQLException, IOException, ClassNotFoundException, InterruptedException {
         change_tariff(tariffName);
-        generalSteps.e2e_null_transaction();
-        generalB2CSteps.logout();
+        e2e_null_transaction();
+        logout();
         Thread.sleep(60000); //т.к. тариф не успевает смениться
-        generalB2CSteps.authorization(login, password);
+        authorization(login, password);
         check_tariff_change(tariffName);
     }
     @StepGroup
@@ -143,10 +138,10 @@ public class B2C_PrepUserSteps extends ScenarioSteps {
         String tariffName = listTariffs.get(rand.nextInt(listTariffs.size()));
 
         change_tariff(tariffName);
-        generalSteps.e2e_null_transaction();
-        generalB2CSteps.logout();
+        e2e_null_transaction();
+        logout();
         Thread.sleep(60000); //т.к. тариф не успевает смениться
-        generalB2CSteps.authorization(login, password);
+        authorization(login, password);
         check_tariff_change(tariffName);
     }
 }

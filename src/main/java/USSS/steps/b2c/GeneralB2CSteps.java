@@ -5,6 +5,7 @@ import USSS.Utils.ReadConfiguration;
 import USSS.pages.b2c.LoginB2CPage;
 import USSS.pages.b2c.prep.ProfilePage;
 import USSS.pages.b2c.prep.TariffsListPage;
+import USSS.steps.GeneralSteps;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.pages.Pages;
 import net.thucydides.core.steps.ScenarioSteps;
@@ -12,7 +13,7 @@ import net.thucydides.core.steps.ScenarioSteps;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class GeneralB2CSteps extends ScenarioSteps {
+public abstract class GeneralB2CSteps extends GeneralSteps {
     public GeneralB2CSteps(Pages pages) {super(pages); }
 
     @Step

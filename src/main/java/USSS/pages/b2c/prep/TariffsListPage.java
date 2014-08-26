@@ -17,8 +17,6 @@ public class TariffsListPage extends AbstractTariffListPage {
     public TariffsListPage(WebDriver driver) {
         super(driver);
     }
-    @FindBy(xpath = "//span[contains(@class,'icon icon-connected')]//..//following-sibling::span[contains(@class,'tariff-title')]")
-    private WebElement currentTariffName;
 
     public void changeTariff(String tariffName) {
        try{
