@@ -15,6 +15,7 @@ public class B2C_PostUserSteps extends GeneralB2CSteps {
     public void change_tariff(String tariffName){
         TariffsListPage tariffsListPage = getPages().get(TariffsListPage.class);
         tariffsListPage.changeTariff(tariffName);
+
     }
 
 
