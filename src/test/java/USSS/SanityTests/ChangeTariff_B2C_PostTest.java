@@ -1,5 +1,6 @@
 package USSS.SanityTests;
 
+import USSS.Utils.SettingsTests;
 import USSS.requirements.USSS_6_0_Sanity;
 import USSS.steps.GeneralSteps;
 import USSS.steps.b2c.GeneralB2CSteps;
@@ -17,6 +18,8 @@ import org.openqa.selenium.WebDriver;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Map;
 
 @RunWith(ThucydidesRunner.class)
 @Story(USSS_6_0_Sanity.B2C_ManageBPlan.B2C_ChangeBPlanPost.class)
@@ -33,6 +36,8 @@ public class ChangeTariff_B2C_PostTest {
 
     @Test
     public void change_tariff() throws SQLException, IOException, ClassNotFoundException, InterruptedException {
+
+        Map<String,String> settings =  SettingsTests.getSettingsForTest("change_tariff_with_positive_balance");
 
         String login = "sel_9030339830_post";
         String password = "FRol370026vf";
