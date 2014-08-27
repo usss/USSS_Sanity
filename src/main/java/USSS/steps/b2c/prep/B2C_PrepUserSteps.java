@@ -2,9 +2,7 @@ package USSS.steps.b2c.prep;
 
 import USSS.Utils.DataBaseUtils;
 import USSS.Utils.ReadConfiguration;
-import USSS.pages.Exceptions.ChangeTariffFailException;
-import USSS.pages.Exceptions.IncorrectListTariffsException;
-import USSS.pages.Exceptions.InsufficientComverseBalanceException;
+import USSS.pages.Exceptions.*;
 import USSS.pages.b2c.prep.TariffsListB2CPrepPage;
 import USSS.steps.b2c.GeneralB2CSteps;
 import net.thucydides.core.annotations.Step;
@@ -90,7 +88,7 @@ public class B2C_PrepUserSteps extends GeneralB2CSteps {
             TariffsListB2CPrepPage tariffsListPage = getPages().get(TariffsListB2CPrepPage.class);
             tariffsListPage.changeTariff(tariffName);
             throw new InsufficientComverseBalanceException("Успешный переход на тариф [" + tariffName +"] при отрицательном балансе!");
-        }catch (InsufficientComverseBalanceException e){
+        }catch (InsufficientComverseBalanceException ignore){
             //NOP
         }
     }
@@ -103,7 +101,7 @@ public class B2C_PrepUserSteps extends GeneralB2CSteps {
         try {
             tariffsListPage.changeTariff(tariffName);
             throw new InsufficientComverseBalanceException("Успешный переход на тариф [" + tariffName +"] при отрицательном балансе!");
-        }catch (InsufficientComverseBalanceException e){
+        }catch (InsufficientComverseBalanceException ignore){
             //NOP
         }
     }
@@ -113,7 +111,7 @@ public class B2C_PrepUserSteps extends GeneralB2CSteps {
         TariffsListB2CPrepPage tariffsListPage = getPages().get(TariffsListB2CPrepPage.class);
         String currentTariff = tariffsListPage.getCurrentTariff();
         if(!currentTariff.contains(tariffName))
-            throw new ChangeTariffFailException("Ошибка смены тарифа [" + currentTariff + "] на тариф [" + tariffName + "]");
+            throw new ChangeTariffException("Ошибка смены тарифа [" + currentTariff + "] на тариф [" + tariffName + "]");
     }
     @StepGroup
     public void change_tariff_and_check_change(String login, String password, String tariffName) throws SQLException, IOException, ClassNotFoundException, InterruptedException {

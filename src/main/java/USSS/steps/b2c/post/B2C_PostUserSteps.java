@@ -2,7 +2,7 @@ package USSS.steps.b2c.post;
 
 import USSS.Utils.DataBaseUtils;
 import USSS.Utils.ReadConfiguration;
-import USSS.pages.Exceptions.ChangeTariffFailException;
+import USSS.pages.Exceptions.ChangeTariffException;
 import USSS.pages.Exceptions.IncorrectListTariffsException;
 import USSS.pages.Exceptions.NoFutureTariffException;
 import USSS.pages.b2c.post.TariffsListB2CPostPage;
@@ -37,7 +37,7 @@ public class B2C_PostUserSteps extends GeneralB2CSteps {
         TariffsListB2CPostPage tariffsListPage = getPages().get(TariffsListB2CPostPage.class);
         String futureTariffName = tariffsListPage.getFutureTariffName();
         if(!futureTariffName.trim().equals(tariffName.trim()))
-            throw new ChangeTariffFailException("Ошибка смены тарифа [" + futureTariffName + "] на тариф [" + tariffName + "]");
+            throw new ChangeTariffException("Ошибка смены тарифа [" + futureTariffName + "] на тариф [" + tariffName + "]");
     }
     @Step
     public void check_display_tariffs() throws IOException, SQLException, ClassNotFoundException {
@@ -68,13 +68,14 @@ public class B2C_PostUserSteps extends GeneralB2CSteps {
                 "  and NVL(TO_CHAR(TRUNC(s.EXPIRATION_DATE),'YYYYMMDD'),'47001231')>=SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@RUS35 where logical_date_type='O')" +
                 "  and to_char(s.effective_date,'YYYYMMDD')<=SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@RUS35 where logical_date_type='O')" +
                 "  and (s.market_restrict_ind IS NULL or s.market_restrict_ind ='N' or msr.market_code='VIP')" +
-                "   and NVL(TO_CHAR(TRUNC(s.sale_exp_date),'YYYYMMDD'),'47001231')>=SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@RUS35 where logical_date_type='O')" +
+                "  and NVL(TO_CHAR(TRUNC(s.sale_exp_date),'YYYYMMDD'),'47001231')>=SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@RUS35 where logical_date_type='O')" +
                 "  and to_char(s.sale_eff_date,'YYYYMMDD')<=SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@RUS35 where logical_date_type='O') " +
                 "  and ADD_IND='Y'" +
                 "  and ub_pp_type = 'C'" +
-                "  and non_public_ind='N'" +
+                "  and ((select * from (select public_ind from ecr9_billing_account_ext where ban in(select customer_id from ecr9_subscriber where subscriber_no='9030339830')) where public_ind = 'A')is null  or" +
+                "  non_public_ind='N')" +
                 "  ) group by entity_name";
-        ArrayList<Map<String, String>> expectedListMapTariffs = db.ExecuteQuery(query,"entity_name");
+        ArrayList<Map<String, String>> expectedListMapTariffs = db.ExecuteQuery(query, "entity_name");
         db.close();
         Collections.sort(listTariffs);
         List<String> expectedListTariffs = new ArrayList<String>();
@@ -105,6 +106,16 @@ public class B2C_PostUserSteps extends GeneralB2CSteps {
             throw new IncorrectListTariffsException("Будущий тарифный план не отменен!");
         }catch (NoFutureTariffException ignore){
             //NOP
+        }
+    }
+    @Step
+    public void check_disable_buttons_change_tariff(){
+        TariffsListB2CPostPage tariffsListPage = getPages().get(TariffsListB2CPostPage.class);
+        List<String> listTariffs = tariffsListPage.getListTariffs();
+        for (String tariff : listTariffs){
+            if (tariffsListPage.checkEnabledButtonChangeTariff(tariff)){
+                throw new ChangeTariffException("Кнопка перехода на тариф " + tariff + " доступна!");
+            }
         }
     }
     @StepGroup

@@ -41,11 +41,14 @@ public class ChangeTariff_B2C_PostTest {
         B2CSteps.open_tariff_list();
         //B2CSteps.check_display_tariffs();
         B2CSteps.change_tariff_and_check_change(login, password);
+        B2CSteps.check_disable_buttons_change_tariff();
         B2CSteps.cancel_future_tariff();
         B2CSteps.logout();
         B2CSteps.e2e_null_transaction();
+        Thread.sleep(15000);
         B2CSteps.authorization(login,password);
-
+        B2CSteps.open_tariff_list();
+        B2CSteps.check_cancel_future_tariff();
+        B2CSteps.logout();
     }
-
 }

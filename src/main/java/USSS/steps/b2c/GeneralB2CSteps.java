@@ -7,7 +7,7 @@ import USSS.steps.GeneralSteps;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.pages.Pages;
 
-public abstract class GeneralB2CSteps extends GeneralSteps {
+public class GeneralB2CSteps extends GeneralSteps {
     public GeneralB2CSteps(Pages pages) {super(pages); }
 
     @Step

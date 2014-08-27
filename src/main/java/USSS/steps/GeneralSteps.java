@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 
-public abstract class GeneralSteps extends ScenarioSteps {
+public class GeneralSteps extends ScenarioSteps {
     public GeneralSteps(Pages pages) {super(pages); }
 
     @Step
