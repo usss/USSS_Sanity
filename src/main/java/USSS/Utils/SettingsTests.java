@@ -1,12 +1,14 @@
 package USSS.Utils;
 
 import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -22,6 +24,9 @@ public class SettingsTests {
             in = new FileInputStream(fileSettingsName);
             HSSFWorkbook wb = new HSSFWorkbook(in);
             HSSFSheet sheet = wb.getSheetAt(0);
+
+
+
             Iterator<Row> rows = sheet.rowIterator();
             HSSFRow row = (HSSFRow) rows.next();
             String str = row.getCell(0).getStringCellValue();
@@ -34,8 +39,8 @@ public class SettingsTests {
                 throw new NullPointerException("Параметры для теста [" + testName + "] отсутствуют в файле настроек!");
             }
             Map<String, String> map = new HashMap<String, String>();
+            row.getCell(2).setCellType(Cell.CELL_TYPE_STRING);
             map.put(row.getCell(1).toString(), row.getCell(2).toString());
-
             row = (HSSFRow) rows.next();
 
             while (row.getCell(0).getStringCellValue().equals("")) {
