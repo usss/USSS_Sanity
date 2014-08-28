@@ -1,5 +1,6 @@
 package USSS.SanityTests;
 
+import USSS.Utils.SettingsTests;
 import USSS.requirements.USSS_6_0_Sanity;
 import USSS.steps.GeneralSteps;
 import USSS.steps.b2c.GeneralB2CSteps;
@@ -14,9 +15,9 @@ import org.openqa.selenium.WebDriver;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Map;
 
 @RunWith(ThucydidesRunner.class)
-//@UseTestDataFrom("test-data/categories.csv")
 @Story(USSS_6_0_Sanity.B2C_ManageBPlan.B2C_ChangeBPlanPrep.class)
 public class ChangeTariff_B2C_PrepTest {
 
@@ -32,24 +33,30 @@ public class ChangeTariff_B2C_PrepTest {
     @Test
     public void change_tariff_with_positive_balance() throws SQLException, IOException, ClassNotFoundException, InterruptedException {
 
-        String login = "sel_9687013119_pre";
-        String password = "FRol370026vf";
+        Map<String,String> settings =  SettingsTests.getParametersForTest("change_tariff_with_positive_balance");
+
+        String login = settings.get("LoginUser");
+        String password = settings.get("PasswordUser");
+        String tariffName = settings.get("ChangeTariff");
 
         B2CSteps.authorization(login, password);
         B2CSteps.open_tariff_list();
-        B2CSteps.check_display_tariffs();
-        B2CSteps.change_tariff_and_check_change(login,password);
+        B2CSteps.check_display_tariffs(login);
+        B2CSteps.change_tariff_and_check_change(login,password,tariffName);
         B2CSteps.logout();
     }
     @Test
-    public void change_tariff_with_negative_balance(){
+    public void change_tariff_with_negative_balance() throws IOException {
 
-        String login = "9687013118";
-        String password = "Qwerty4$";
+        Map<String,String> settings =  SettingsTests.getParametersForTest("change_tariff_with_negative_balance");
+
+        String login = settings.get("LoginUser");
+        String password = settings.get("PasswordUser");
+        String tariffName = settings.get("ChangeTariff");
 
         B2CSteps.authorization(login, password);
         B2CSteps.open_tariff_list();
-        B2CSteps.change_tariff_with_negative_balance();
+        B2CSteps.change_tariff_with_negative_balance(tariffName);
         B2CSteps.logout();
     }
 }

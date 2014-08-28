@@ -2,6 +2,7 @@ package USSS.steps.b2c.prep;
 
 import USSS.Utils.DataBaseUtils;
 import USSS.Utils.ReadConfiguration;
+import USSS.Utils.SettingsTests;
 import USSS.pages.Exceptions.*;
 import USSS.pages.b2c.prep.TariffsListB2CPrepPage;
 import USSS.steps.b2c.GeneralB2CSteps;
@@ -18,37 +19,43 @@ public class B2C_PrepUserSteps extends GeneralB2CSteps {
     public B2C_PrepUserSteps(Pages pages) {super(pages); }
 
     @Step
-    public void check_display_tariffs() throws IOException, SQLException, ClassNotFoundException {
+    public void check_display_tariffs(String login) throws IOException, SQLException, ClassNotFoundException {
+
         TariffsListB2CPrepPage tariffsListPage = getPages().get(TariffsListB2CPrepPage.class);
         List<String> listTariffs = tariffsListPage.getListTariffs();
         ReadConfiguration conf = new ReadConfiguration("BSSDB.properties");
         DataBaseUtils db = new DataBaseUtils(conf.getDataBase(), conf.getHost(), conf.getPort(),conf.getUserName(), conf.getUserPass());
+
+        String queryPhNumber = "select substr(external_id,0,10) as phonenumber from user_hierarchies where user_id='" + login + "' and hierarchy_source='CR'";
+        String phNumber = db.ExecuteQuery(queryPhNumber,"phonenumber").get(0).get("phonenumber");
+        String environmentEnsemble = SettingsTests.EnvironmentEnsemble.getDataBase();
+
         String query = "select entity_name from web_entity where ext_entity_code in(" +
-                              "select TRIM(to_price_plan) from price_plan_change_valid@RUS35 where from_price_plan in(select soc from ecr9_service_agreement where service_type='P' and subscriber_no='9687013119') and to_price_plan in" +
+                              "select TRIM(to_price_plan) from price_plan_change_valid@" + environmentEnsemble + " where from_price_plan in(select soc from ecr9_service_agreement where service_type='P' and subscriber_no='" + phNumber + "') and to_price_plan in" +
                                 "(select s.soc " +
-                                "from soc@RUS35 s " +
-                                "left join market_soc_restrict@RUS35 msr " +
+                                "from soc@" + environmentEnsemble + " s " +
+                                "left join market_soc_restrict@" + environmentEnsemble + " msr " +
                                 "on (s.market_restrict_ind = 'Y' " +
                                 "and s.soc = msr.soc " +
-                                "and NVL(TO_CHAR(msr.EXPIRATION_DATE,'YYYYMMDD'),'47001231')>= SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@RUS35 where logical_date_type='O') " +
-                                "and to_char(msr.effective_date,'YYYYMMDD')<= SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@RUS35 where logical_date_type='O')) " +
-                                "join soc_acc_restriction@RUS35 sar " +
+                                "and NVL(TO_CHAR(msr.EXPIRATION_DATE,'YYYYMMDD'),'47001231')>= SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@" + environmentEnsemble + " where logical_date_type='O') " +
+                                "and to_char(msr.effective_date,'YYYYMMDD')<= SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@" + environmentEnsemble + " where logical_date_type='O')) " +
+                                "join soc_acc_restriction@" + environmentEnsemble + " sar " +
                                 "on (s.soc=sar.soc " +
-                                "and sar.account_types= SOME(select account_type from ecr9_billing_account where ban in (select customer_id from ecr9_subscriber where subscriber_no='9687013119'))) " +
-                                "join product_soc_restriction@RUS35 psr " +
+                                "and sar.account_types= SOME(select account_type from ecr9_billing_account where ban in (select customer_id from ecr9_subscriber where subscriber_no='" + phNumber + "'))) " +
+                                "join product_soc_restriction@" + environmentEnsemble + " psr " +
                                 "on (s.soc=psr.soc " +
                                 "and psr.product_code='GVOI' " +
-                                "and NVL(TO_CHAR(psr.EXPIRATION_DATE,'YYYYMMDD'),'47001231')>= SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@RUS35 where logical_date_type='O') " +
-                                "and to_char(psr.effective_date,'YYYYMMDD')<= SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@RUS35 where logical_date_type='O') ) " +
+                                "and NVL(TO_CHAR(psr.EXPIRATION_DATE,'YYYYMMDD'),'47001231')>= SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@" + environmentEnsemble + " where logical_date_type='O') " +
+                                "and to_char(psr.effective_date,'YYYYMMDD')<= SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@" + environmentEnsemble + " where logical_date_type='O') ) " +
                                 "join price_plan pp on pp.external_price_plan = s.soc " +
                                 "join ecr9_price_plan_ext epp on pp.price_plan_id=epp.price_plan_id " +
                                 "where service_type='P' " +
                                 "and soc_status='A' " +
-                                "and NVL(TO_CHAR(TRUNC(s.EXPIRATION_DATE),'YYYYMMDD'),'47001231')>= SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@RUS35 where logical_date_type='O')" +
-                                "and to_char(s.effective_date,'YYYYMMDD')<= SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@RUS35 where logical_date_type='O')" +
+                                "and NVL(TO_CHAR(TRUNC(s.EXPIRATION_DATE),'YYYYMMDD'),'47001231')>= SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@" + environmentEnsemble + " where logical_date_type='O')" +
+                                "and to_char(s.effective_date,'YYYYMMDD')<= SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@" + environmentEnsemble + " where logical_date_type='O')" +
                                 "and (s.market_restrict_ind IS NULL or s.market_restrict_ind ='N' or msr.market_code='VIP')" +
-                                "and NVL(TO_CHAR(TRUNC(s.sale_exp_date),'YYYYMMDD'),'47001231')>= SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@RUS35 where logical_date_type='O') " +
-                                "and to_char(s.sale_eff_date,'YYYYMMDD')<= SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@RUS35 where logical_date_type='O')" +
+                                "and NVL(TO_CHAR(TRUNC(s.sale_exp_date),'YYYYMMDD'),'47001231')>= SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@" + environmentEnsemble + " where logical_date_type='O') " +
+                                "and to_char(s.sale_eff_date,'YYYYMMDD')<= SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@" + environmentEnsemble + " where logical_date_type='O')" +
                                 "and ADD_IND='Y')" +
                                 ") group by entity_name";
         ArrayList <Map<String, String>> expectedListMapTariffs = db.ExecuteQuery(query,"entity_name");
@@ -79,17 +86,25 @@ public class B2C_PrepUserSteps extends GeneralB2CSteps {
     }
     @Step
     public void change_tariff(String tariffName){
-        TariffsListB2CPrepPage tariffsListPage = getPages().get(TariffsListB2CPrepPage.class);
-        tariffsListPage.changeTariff(tariffName);
+        if(tariffName.equals("")) {
+            change_tariff();
+        }else {
+            TariffsListB2CPrepPage tariffsListPage = getPages().get(TariffsListB2CPrepPage.class);
+            tariffsListPage.changeTariff(tariffName);
+        }
     }
     @Step
     public void change_tariff_with_negative_balance(String tariffName){
-        try {
-            TariffsListB2CPrepPage tariffsListPage = getPages().get(TariffsListB2CPrepPage.class);
-            tariffsListPage.changeTariff(tariffName);
-            throw new InsufficientComverseBalanceException("Успешный переход на тариф [" + tariffName +"] при отрицательном балансе!");
-        }catch (InsufficientComverseBalanceException ignore){
-            //NOP
+        if(tariffName.equals("")) {
+            change_tariff_with_negative_balance();
+        }else {
+            try {
+                TariffsListB2CPrepPage tariffsListPage = getPages().get(TariffsListB2CPrepPage.class);
+                tariffsListPage.changeTariff(tariffName);
+                throw new InsufficientComverseBalanceException("Успешный переход на тариф [" + tariffName +"] при отрицательном балансе!");
+            }catch (InsufficientComverseBalanceException ignore){
+                //NOP
+            }
         }
     }
     @Step
@@ -115,6 +130,7 @@ public class B2C_PrepUserSteps extends GeneralB2CSteps {
     }
     @StepGroup
     public void change_tariff_and_check_change(String login, String password, String tariffName) throws SQLException, IOException, ClassNotFoundException, InterruptedException {
+
         change_tariff(tariffName);
         e2e_null_transaction();
         logout();

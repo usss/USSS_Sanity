@@ -37,15 +37,16 @@ public class ChangeTariff_B2C_PostTest {
     @Test
     public void change_tariff() throws SQLException, IOException, ClassNotFoundException, InterruptedException {
 
-        Map<String,String> settings =  SettingsTests.getSettingsForTest("change_tariff_with_positive_balance");
+        Map<String,String> settings =  SettingsTests.getParametersForTest("change_tariff");
 
-        String login = "sel_9030339830_post";
-        String password = "FRol370026vf";
+        String login = settings.get("LoginUser");
+        String password = settings.get("PasswordUser");
+        String tariffName = settings.get("ChangeTariff");
 
         B2CSteps.authorization(login,password);
         B2CSteps.open_tariff_list();
-        //B2CSteps.check_display_tariffs();
-        B2CSteps.change_tariff_and_check_change(login, password);
+        B2CSteps.check_display_tariffs(login);
+        B2CSteps.change_tariff_and_check_change(login, password,tariffName);
         B2CSteps.check_disable_buttons_change_tariff();
         B2CSteps.cancel_future_tariff();
         B2CSteps.logout();

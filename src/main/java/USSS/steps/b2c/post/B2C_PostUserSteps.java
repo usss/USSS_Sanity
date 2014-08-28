@@ -2,6 +2,7 @@ package USSS.steps.b2c.post;
 
 import USSS.Utils.DataBaseUtils;
 import USSS.Utils.ReadConfiguration;
+import USSS.Utils.SettingsTests;
 import USSS.pages.Exceptions.ChangeTariffException;
 import USSS.pages.Exceptions.IncorrectListTariffsException;
 import USSS.pages.Exceptions.NoFutureTariffException;
@@ -20,8 +21,12 @@ public class B2C_PostUserSteps extends GeneralB2CSteps {
 
     @Step
     public void change_tariff(String tariffName){
-        TariffsListB2CPostPage tariffsListPage = getPages().get(TariffsListB2CPostPage.class);
-        tariffsListPage.changeTariff(tariffName);
+        if(tariffName.equals("")) {
+            change_tariff();
+        }else {
+            TariffsListB2CPostPage tariffsListPage = getPages().get(TariffsListB2CPostPage.class);
+            tariffsListPage.changeTariff(tariffName);
+        }
     }
     @Step
     public void change_tariff(){
@@ -40,42 +45,46 @@ public class B2C_PostUserSteps extends GeneralB2CSteps {
             throw new ChangeTariffException("Ошибка смены тарифа [" + futureTariffName + "] на тариф [" + tariffName + "]");
     }
     @Step
-    public void check_display_tariffs() throws IOException, SQLException, ClassNotFoundException {
+    public void check_display_tariffs(String login) throws IOException, SQLException, ClassNotFoundException {
         TariffsListB2CPostPage tariffsListPage = getPages().get(TariffsListB2CPostPage.class);
         List<String> listTariffs = tariffsListPage.getListTariffs();
         ReadConfiguration conf = new ReadConfiguration("BSSDB.properties");
         DataBaseUtils db = new DataBaseUtils(conf.getDataBase(), conf.getHost(), conf.getPort(),conf.getUserName(), conf.getUserPass());
-        String query = "select entity_name from web_entity where ext_entity_code in(" +
+
+        String queryPhNumber = "select substr(external_id,0,10) as phonenumber from user_hierarchies where user_id='" + login + "' and hierarchy_source='CR'";
+        String phNumber = db.ExecuteQuery(queryPhNumber,"phonenumber").get(0).get("phonenumber");
+        String environmentEnsemble = SettingsTests.EnvironmentEnsemble.getDataBase();
+        String queryTariffList = "select entity_name from web_entity where ext_entity_code in(" +
                 "select trim(s.soc)" +
-                "  from soc@RUS35 s" +
-                "   left join market_soc_restrict@RUS35 msr" +
+                "  from soc@" + environmentEnsemble +" s" +
+                "   left join market_soc_restrict@" + environmentEnsemble +" msr" +
                 "       on (s.market_restrict_ind = 'Y' " +
                 "    and s.soc = msr.soc " +
-                "    and NVL(TO_CHAR(msr.EXPIRATION_DATE,'YYYYMMDD'),'47001231')>=SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@RUS35 where logical_date_type='O')" +
-                "    and to_char(msr.effective_date,'YYYYMMDD')<=SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@RUS35 where logical_date_type='O'))" +
-                "   join soc_acc_restriction@RUS35 sar" +
+                "    and NVL(TO_CHAR(msr.EXPIRATION_DATE,'YYYYMMDD'),'47001231')>=SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@" + environmentEnsemble +" where logical_date_type='O')" +
+                "    and to_char(msr.effective_date,'YYYYMMDD')<=SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@" + environmentEnsemble +" where logical_date_type='O'))" +
+                "   join soc_acc_restriction@" + environmentEnsemble +" sar" +
                 "       on (s.soc=sar.soc" +
-                "    and sar.account_types=SOME(select account_type from ecr9_billing_account where ban in (select customer_id from ecr9_subscriber where subscriber_no='9030339830')))" +
-                "   join product_soc_restriction@RUS35 psr" +
+                "    and sar.account_types=SOME(select account_type from ecr9_billing_account where ban in (select customer_id from ecr9_subscriber where subscriber_no='" + phNumber + "')))" +
+                "   join product_soc_restriction@" + environmentEnsemble +" psr" +
                 "       on (s.soc=psr.soc" +
                 "    and psr.product_code='GVOI'" +
-                "    and NVL(TO_CHAR(psr.EXPIRATION_DATE,'YYYYMMDD'),'47001231')>=SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@RUS35 where logical_date_type='O')" +
-                "    and to_char(psr.effective_date,'YYYYMMDD')<=SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@RUS35 where logical_date_type='O'))" +
+                "    and NVL(TO_CHAR(psr.EXPIRATION_DATE,'YYYYMMDD'),'47001231')>=SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@" + environmentEnsemble +" where logical_date_type='O')" +
+                "    and to_char(psr.effective_date,'YYYYMMDD')<=SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@" + environmentEnsemble +" where logical_date_type='O'))" +
                 "  join price_plan pp on pp.external_price_plan = s.soc" +
                 "  join ecr9_price_plan_ext epp on pp.price_plan_id=epp.price_plan_id" +
                 " where service_type='P' " +
                 "  and soc_status='A'" +
-                "  and NVL(TO_CHAR(TRUNC(s.EXPIRATION_DATE),'YYYYMMDD'),'47001231')>=SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@RUS35 where logical_date_type='O')" +
-                "  and to_char(s.effective_date,'YYYYMMDD')<=SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@RUS35 where logical_date_type='O')" +
+                "  and NVL(TO_CHAR(TRUNC(s.EXPIRATION_DATE),'YYYYMMDD'),'47001231')>=SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@" + environmentEnsemble +" where logical_date_type='O')" +
+                "  and to_char(s.effective_date,'YYYYMMDD')<=SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@" + environmentEnsemble +" where logical_date_type='O')" +
                 "  and (s.market_restrict_ind IS NULL or s.market_restrict_ind ='N' or msr.market_code='VIP')" +
-                "  and NVL(TO_CHAR(TRUNC(s.sale_exp_date),'YYYYMMDD'),'47001231')>=SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@RUS35 where logical_date_type='O')" +
-                "  and to_char(s.sale_eff_date,'YYYYMMDD')<=SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@RUS35 where logical_date_type='O') " +
+                "  and NVL(TO_CHAR(TRUNC(s.sale_exp_date),'YYYYMMDD'),'47001231')>=SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@" + environmentEnsemble +" where logical_date_type='O')" +
+                "  and to_char(s.sale_eff_date,'YYYYMMDD')<=SOME(select TO_CHAR(logical_date,'yyyymmdd') from logical_date@" + environmentEnsemble +" where logical_date_type='O') " +
                 "  and ADD_IND='Y'" +
                 "  and ub_pp_type = 'C'" +
-                "  and ((select * from (select public_ind from ecr9_billing_account_ext where ban in(select customer_id from ecr9_subscriber where subscriber_no='9030339830')) where public_ind = 'A')is null  or" +
+                "  and ((select * from (select public_ind from ecr9_billing_account_ext where ban in(select customer_id from ecr9_subscriber where subscriber_no='" + phNumber +"')) where public_ind = 'A')is null  or" +
                 "  non_public_ind='N')" +
                 "  ) group by entity_name";
-        ArrayList<Map<String, String>> expectedListMapTariffs = db.ExecuteQuery(query, "entity_name");
+        ArrayList<Map<String, String>> expectedListMapTariffs = db.ExecuteQuery(queryTariffList, "entity_name");
         db.close();
         Collections.sort(listTariffs);
         List<String> expectedListTariffs = new ArrayList<String>();
@@ -85,13 +94,12 @@ public class B2C_PostUserSteps extends GeneralB2CSteps {
         Collections.sort(expectedListTariffs);
 
         if(expectedListTariffs.size() != listTariffs.size()){
-            throw new IncorrectListTariffsException("Ожидаемое количество тарифов = " + expectedListTariffs.size() + " текущее количество тарифов = " + listTariffs.size() +  " запрос к БД [" + query + "]");
+            throw new IncorrectListTariffsException("Ожидаемое количество тарифов = " + expectedListTariffs.size() + " текущее количество тарифов = " + listTariffs.size() +  " запрос к БД [" + queryTariffList + "]");
         }
         for(int i = 0; i < expectedListTariffs.size(); i++){
             if (!expectedListTariffs.get(i).trim().equals(listTariffs.get(i).trim()))
-                throw new IncorrectListTariffsException("Несоответствие тарифов! Ожидаемый [" + expectedListTariffs.get(i).trim() + "] " + " текущий [" + listTariffs.get(i).trim() + "]" +  " запрос к БД [" + query + "]");
+                throw new IncorrectListTariffsException("Несоответствие тарифов! Ожидаемый [" + expectedListTariffs.get(i).trim() + "] " + " текущий [" + listTariffs.get(i).trim() + "]" +  " запрос к БД [" + queryTariffList + "]");
         }
-
     }
     @Step
     public void cancel_future_tariff(){
