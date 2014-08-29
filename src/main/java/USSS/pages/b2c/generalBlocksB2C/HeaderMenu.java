@@ -1,4 +1,4 @@
-package USSS.pages.b2c.blocks;
+package USSS.pages.b2c.generalBlocksB2C;
 
 import org.openqa.selenium.support.FindBy;
 import ru.yandex.qatools.htmlelements.element.HtmlElement;

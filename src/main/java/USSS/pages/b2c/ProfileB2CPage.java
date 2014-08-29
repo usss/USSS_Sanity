@@ -1,7 +1,7 @@
 package USSS.pages.b2c;
 
 
-import USSS.pages.b2c.blocks.HeaderMenu;
+import USSS.pages.b2c.generalBlocksB2C.HeaderMenu;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import ru.yandex.qatools.htmlelements.thucydides.BlockPageObject;
@@ -15,5 +15,8 @@ public  class ProfileB2CPage extends BlockPageObject {
 
     public void openTariffs(){
         headerMenu.openTariffs();
+    }
+    public void openSOCs(){
+        headerMenu.openSocs();
     }
 }

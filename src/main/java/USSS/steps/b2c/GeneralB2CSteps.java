@@ -26,5 +26,10 @@ public class GeneralB2CSteps extends GeneralSteps {
         ProfileB2CPage profilePage = getPages().get(ProfileB2CPage.class);
         profilePage.openTariffs();
     }
+    @Step
+    public void open_socs_list(){
+        ProfileB2CPage profilePage = getPages().get(ProfileB2CPage.class);
+        profilePage.openSOCs();
+    }
 
 }

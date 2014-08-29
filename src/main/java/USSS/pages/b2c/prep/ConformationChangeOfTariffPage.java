@@ -1,6 +1,6 @@
 package USSS.pages.b2c.prep;
 
-import USSS.pages.b2c.blocks.HeaderMenu;
+import USSS.pages.b2c.generalBlocksB2C.HeaderMenu;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;

@@ -1,6 +1,6 @@
 package USSS.pages.b2c;
 
-import USSS.pages.b2c.blocks.HeaderMenu;
+import USSS.pages.b2c.generalBlocksB2C.HeaderMenu;
 import net.thucydides.core.annotations.DefaultUrl;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
