@@ -4,10 +4,7 @@ import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -15,17 +12,15 @@ import java.util.Map;
 
 public class SettingsTests {
 
-    private static final String fileSettingsName = "SettingsTests.xls";
+    private static final String FILE_SETTINGS_NAME = "SettingsTests.xls";
 
     public static Map<String,String> getParametersForTest(String testName) throws IOException {
 
         InputStream in = null;
         try {
-            in = new FileInputStream(fileSettingsName);
+            in = new FileInputStream(FILE_SETTINGS_NAME);
             HSSFWorkbook wb = new HSSFWorkbook(in);
             HSSFSheet sheet = wb.getSheetAt(0);
-
-
 
             Iterator<Row> rows = sheet.rowIterator();
             HSSFRow row = (HSSFRow) rows.next();
@@ -66,42 +61,55 @@ public class SettingsTests {
             }
         }
     }
-    public static String getURL(){
-        return "http://dev-web01:23001";
+    public static String getURL() throws IOException {
+        return getCellText(0,6);
     }
 
     public static class EnvironmentEnsemble {
-        public static String getDataBase() {
-            return "RUS35";
+        public static String getDataBase() throws IOException {
+            return getCellText(3,6);
         }
-        public static String getHost() {
-            return "dynamo";
+        public static String getHost() throws IOException {
+            return getCellText(4,6);
         }
-        public static String getPort() {
-            return "1521";
+        public static String getPort() throws IOException {
+            return getCellText(5,6);
         }
-        public static String getUserName() {
-            return "vmpapp36";
+        public static String getUserName() throws IOException {
+            return getCellText(6,6);
         }
-        public static String getUserPass() {
-            return "vmpapp36";
+        public static String getUserPass() throws IOException {
+            return getCellText(7,6);
         }
     }
     public static class EnvironmentUSSS{
-        public static String getDataBase() {
-            return "BSSDEV";
+        public static String getDataBase() throws IOException {
+            return getCellText(3,7);
         }
-        public static String getHost() {
-            return "dev-db01";
+        public static String getHost() throws IOException {
+            return getCellText(4,7);
         }
-        public static String getPort() {
-            return "1521";
+        public static String getPort() throws IOException {
+            return getCellText(5,7);
         }
-        public static String getUserName() {
-            return "BSSDB4";
+        public static String getUserName() throws IOException {
+            return getCellText(6,7);
         }
-        public static String getUserPass() {
-            return "BSSDB4";
+        public static String getUserPass() throws IOException {
+            return getCellText(7,7);
+        }
+    }
+    private static String getCellText(int row, int column) throws IOException {
+        try(InputStream in = new FileInputStream(FILE_SETTINGS_NAME)){
+            HSSFWorkbook wb = new HSSFWorkbook(in);
+            HSSFSheet sheet = wb.getSheetAt(0);
+            Cell cell  = sheet.getRow(row).getCell(column);
+            cell.setCellType(Cell.CELL_TYPE_STRING);
+            return cell.getStringCellValue();
+        }catch (FileNotFoundException e){
+            throw new FileNotFoundException("Файл настроек - [" + FILE_SETTINGS_NAME + "] не найден!");
+        } catch (IOException e) {
+            throw new IOException("Ошибка чтения ячейки (строка[" + row + "] колонка[" + column + "])");
         }
     }
 }

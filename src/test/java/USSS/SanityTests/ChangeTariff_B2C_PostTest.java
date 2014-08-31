@@ -5,7 +5,6 @@ import USSS.requirements.USSS_6_0_Sanity;
 import USSS.steps.GeneralSteps;
 import USSS.steps.b2c.GeneralB2CSteps;
 import USSS.steps.b2c.post.B2C_PostUserSteps;
-import USSS.steps.b2c.prep.B2C_PrepUserSteps;
 import net.thucydides.core.annotations.Managed;
 import net.thucydides.core.annotations.ManagedPages;
 import net.thucydides.core.annotations.Steps;
