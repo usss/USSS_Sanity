@@ -16,8 +16,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
 
-public class B2C_PostUserSteps extends GeneralB2CSteps {
-    public B2C_PostUserSteps(Pages pages) {super(pages); }
+public class ManageTariffsB2CPostSteps extends GeneralB2CSteps {
+    public ManageTariffsB2CPostSteps(Pages pages) {super(pages); }
 
     @Step
     public void change_tariff(String tariffName){

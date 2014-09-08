@@ -14,9 +14,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
 
-public class ManageTariffsSteps extends GeneralB2CSteps {
+public class ManageTariffsB2CPrepSteps extends GeneralB2CSteps {
 
-    public ManageTariffsSteps(Pages pages) {super(pages); }
+    public ManageTariffsB2CPrepSteps(Pages pages) {super(pages); }
 
     @Step
     public void check_display_tariffs(String login) throws IOException, SQLException, ClassNotFoundException {

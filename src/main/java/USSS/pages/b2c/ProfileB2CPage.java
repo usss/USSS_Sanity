@@ -19,4 +19,10 @@ public  class ProfileB2CPage extends BlockPageObject {
     public void openSOCs(){
         headerMenu.openSocs();
     }
+    public void openRequestHistory(){
+        headerMenu.openHistoryRequest();
+    }
+    public void openFinanceAndDetail(){
+        headerMenu.openFinanceAndDetail();
+    }
 }

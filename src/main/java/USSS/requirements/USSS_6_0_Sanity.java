@@ -13,4 +13,9 @@ public class USSS_6_0_Sanity {
         public class B2C_ManageSOCPost{}
         public class B2C_ManageSOCPrep{}
     }
+    @Feature
+    public class DisplayPayments{
+        public class DisplayPaymentsB2CPrep{}
+        public class DisplayPaymentsB2CPost{}
+    }
 }

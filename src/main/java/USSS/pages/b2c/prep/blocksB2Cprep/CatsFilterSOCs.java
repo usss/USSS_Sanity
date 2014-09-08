@@ -2,8 +2,10 @@ package USSS.pages.b2c.prep.blocksB2Cprep;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import ru.yandex.qatools.htmlelements.element.HtmlElement;
 
 import java.util.List;
@@ -24,6 +26,7 @@ public class CatsFilterSOCs extends HtmlElement {
                 String cssClass = findElement(By.xpath("//span[contains(text(),'" + cat + "')]//ancestor::div[contains(@class,'item-cat')]")).getAttribute("class");
                 if(!cssClass.contains("selected")){
                     findElement(By.xpath(xPathListCats + "[contains(text(),'" + cat + "')]")).click();
+
                 }
             }catch (NoSuchElementException e){
                 throw new NoSuchElementException("Фильтр [" + cat + "] не найден!");

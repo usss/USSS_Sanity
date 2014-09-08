@@ -2,7 +2,7 @@ package USSS.SanityTests;
 
 import USSS.Utils.SettingsTests;
 import USSS.requirements.USSS_6_0_Sanity;
-import USSS.steps.b2c.prep.ManageTariffsSteps;
+import USSS.steps.b2c.prep.ManageTariffsB2CPrepSteps;
 import net.thucydides.core.annotations.*;
 import net.thucydides.core.pages.Pages;
 
@@ -26,7 +26,7 @@ public class ChangeTariff_B2C_PrepTest {
     public Pages pages;
 
     @Steps
-    ManageTariffsSteps B2CSteps;
+    ManageTariffsB2CPrepSteps B2CSteps;
 
     @Test
     public void change_tariff_with_positive_balance() throws SQLException, IOException, ClassNotFoundException, InterruptedException {
