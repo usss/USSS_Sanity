@@ -5,7 +5,6 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
 import java.io.*;
-import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -33,7 +32,7 @@ public class SettingsTests {
             } catch (NullPointerException e) {
                 throw new NullPointerException("Параметры для теста [" + testName + "] отсутствуют в файле настроек!");
             }
-            Map<String, String> map = new HashMap<String, String>();
+            Map<String, String> map = new HashMap<>();
             row.getCell(2).setCellType(Cell.CELL_TYPE_STRING);
             map.put(row.getCell(1).toString(), row.getCell(2).toString());
             row = (HSSFRow) rows.next();
@@ -100,7 +99,9 @@ public class SettingsTests {
         }
     }
     private static String getCellText(int row, int column) throws IOException {
-        try(InputStream in = new FileInputStream(FILE_SETTINGS_NAME)){
+        InputStream in = null;
+        try{
+            in = new FileInputStream(FILE_SETTINGS_NAME);
             HSSFWorkbook wb = new HSSFWorkbook(in);
             HSSFSheet sheet = wb.getSheetAt(0);
             Cell cell  = sheet.getRow(row).getCell(column);
@@ -110,6 +111,14 @@ public class SettingsTests {
             throw new FileNotFoundException("Файл настроек - [" + FILE_SETTINGS_NAME + "] не найден!");
         } catch (IOException e) {
             throw new IOException("Ошибка чтения ячейки (строка[" + row + "] колонка[" + column + "])");
+        }finally {
+            if (in!=null){
+                try{
+                    in.close();
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                }
+            }
         }
     }
 }

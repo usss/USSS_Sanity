@@ -1,6 +1,6 @@
 package USSS.pages.b2c.prep;
 
-import USSS.pages.b2c.generalBlocksB2C.HeaderMenu;
+import USSS.blocks.NavigationMenu;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
@@ -9,16 +9,16 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import ru.yandex.qatools.htmlelements.element.Button;
 import ru.yandex.qatools.htmlelements.thucydides.BlockPageObject;
 
-
 public class ConformationChangeOfTariffPage extends BlockPageObject {
     public ConformationChangeOfTariffPage(WebDriver driver) {
         super(driver);
     }
+
     @FindBy(xpath = "//div[contains(@class,'buttons')]//button//span[contains(text(),'Перейти на тариф')]")
     private Button buttonChangeTariff;
 
     @FindBy(xpath = "//div[@class = 'header-inner']")
-    private HeaderMenu headerMenu;
+    private NavigationMenu navigationMenu;
 
 
     public void clickChangeTariff(){

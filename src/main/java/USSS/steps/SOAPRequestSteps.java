@@ -2,9 +2,7 @@ package USSS.steps;
 
 import com.comverse.www.*;
 import net.thucydides.core.annotations.Step;
-import net.thucydides.core.reports.adaptors.specflow.ScenarioStep;
 import net.thucydides.core.steps.ScenarioSteps;
-import org.apache.axis2.AxisFault;
 import sec.rtbd.comverse.org.webservice.auth.*;
 
 import java.rmi.RemoteException;
@@ -29,12 +27,11 @@ public class SOAPRequestSteps extends ScenarioSteps {
         ProxyLoginResponseE proxyLoginResponseE  = samlSignOnService.proxyLogin(proxyLoginE);
         String str = proxyLoginResponseE.getProxyLoginResponse().getResult();
 
-        String res = str.substring(str.indexOf("<Token>") + "<Token>".length(), str.indexOf("</Token>"));
-        return res;
+       return str.substring(str.indexOf("<Token>") + "<Token>".length(), str.indexOf("</Token>"));
     }
 
     @Step
-    public void setBalance() throws RemoteException, SSOExceptionException, ApiExceptionException {
+    public void set_balance(String phoneNumber, int value) throws RemoteException, SSOExceptionException, ApiExceptionException {
         String token = getToken();
         CustomerCareService customerCareService = new CustomerCareServiceStub();
         SubscriberUpdateBalanceInstance subscriberUpdateBalanceInstance = new SubscriberUpdateBalanceInstance();
@@ -47,7 +44,7 @@ public class SOAPRequestSteps extends ScenarioSteps {
         SubscriberIdentifier subscriberIdentifier = new  SubscriberIdentifier();
 
         StringAttributeJAXBElement phNumber = new StringAttributeJAXBElement();
-        phNumber.setValue("79687013119");
+        phNumber.setValue(phoneNumber);
         phNumber.setSet(true);
 
         ShortAttributeJAXBElement externalId = new ShortAttributeJAXBElement();
@@ -64,7 +61,7 @@ public class SOAPRequestSteps extends ScenarioSteps {
         NumericAttributeJAXBElement totalBalance = new NumericAttributeJAXBElement();
         totalBalance.setSet(true);
         totalBalance.setChanged(true);
-        totalBalance.setValue(1488);
+        totalBalance.setValue(value);
 
         newBalance.setTotalBalance(totalBalance);
 
@@ -84,6 +81,6 @@ public class SOAPRequestSteps extends ScenarioSteps {
         subscriberUpdateBalanceInstanceE.setSubscriberUpdateBalanceInstance(subscriberUpdateBalanceInstance);
 
         SubscriberUpdateBalanceInstanceResponseE response = customerCareService.subscriberUpdateBalanceInstance(subscriberUpdateBalanceInstanceE);
-        System.out.println(response.getSubscriberUpdateBalanceInstanceResponse().getOutput().getOutput().clone()[1].getAvailableBalance().getValue());
+        System.out.println(response.getSubscriberUpdateBalanceInstanceResponse().getOutput().getOutput().clone()[0].getAvailableBalance().getValue());
     }
 }

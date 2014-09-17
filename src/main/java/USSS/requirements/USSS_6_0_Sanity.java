@@ -4,18 +4,28 @@ import net.thucydides.core.annotations.Feature;
 
 public class USSS_6_0_Sanity {
     @Feature
-    public class B2C_ManageBPlan{
-        public class B2C_ChangeBPlanPost{}
-        public class B2C_ChangeBPlanPrep{}
+    public class B2CPostpaid{
+        public class ManageTariffPlans{}
+        public class ManageServices{}
+        public class ViewingPayments{}
     }
     @Feature
-    public class B2C_ManageSOC{
-        public class B2C_ManageSOCPost{}
-        public class B2C_ManageSOCPrep{}
+    public class B2CPrepaid{
+        public class ManageTariffPlans{}
+        public class ManageServices{}
+        public class ViewingPayments{}
+        public class ViewingProfile{}
     }
     @Feature
-    public class DisplayPayments{
-        public class DisplayPaymentsB2CPrep{}
-        public class DisplayPaymentsB2CPost{}
+    public class B2BPostpaid{
+        public class ManageTariffPlans{}
+        public class ManageServices{}
     }
+    @Feature
+    public class B2BPrepaid{
+        public class ManageTariffPlans{}
+        public class ManageServices{}
+    }
+
+
 }
