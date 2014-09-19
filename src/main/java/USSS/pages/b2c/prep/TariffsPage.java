@@ -11,13 +11,23 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static net.thucydides.core.webdriver.ThucydidesWebDriverSupport.getPages;
-
+/**
+ *  pageObject страницы "Тарифы" для B2C prepaid клиентов
+ */
 public class TariffsPage extends BaseTariffsPage {
     public TariffsPage(WebDriver driver) {
         super(driver);
     }
-
+    /**
+     * Метод смены тарифа
+     *
+     * @param tariffName Имя тарифа для перехода
+     *
+     * @throws  TariffNotFoundException если тарифа нет в списке доступных
+     * @throws InsufficientComverseBalanceException если недостаточно баланса для подключения тарифа
+     */
     public void changeTariff(String tariffName) {
+        //блок подключения тарифа из Линейки
        try{
            String xPath = "//span[contains(@class,'tariff-title') and text()='" + tariffName + "']//ancestor::tr[contains(@class,'ui-widget-content')]";
            WebElementFacade selectTariff = this.findBy(xPath);
@@ -36,6 +46,7 @@ public class TariffsPage extends BaseTariffsPage {
                }
            }
        }catch (NoSuchElementException e){
+           //блок подключения обычного
            try {
                WebElementFacade selectTariff = findBy("//div[@class='tariffs-list']/form//div[contains(@class,'info')]//h2[contains(text(),'" + tariffName + "')]//parent::div[contains(@class,'info')]//preceding-sibling::div[contains(@class,'switch')]//button");
                selectTariff.click();

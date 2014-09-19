@@ -21,7 +21,7 @@ import java.util.Map;
 @RunWith(ThucydidesRunner.class)
 @Story(USSS_6_0_Sanity.B2CPostpaid.ViewingPayments.class)
 
-public class DisplayPaymentsTests {
+public class DisplayPaymentsTest {
     @Managed
     public WebDriver webdriver;
 

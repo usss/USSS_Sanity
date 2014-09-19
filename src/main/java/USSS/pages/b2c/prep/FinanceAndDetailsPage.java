@@ -15,38 +15,55 @@ import java.util.*;
 
 import static ch.lambdaj.Lambda.extract;
 import static ch.lambdaj.Lambda.on;
-
+/**
+ *  pageObject страницы "Финансы и детализация" для B2C prepaid клиентов
+ */
 public class FinanceAndDetailsPage extends BaseFinanceAndDetailsPage {
     public FinanceAndDetailsPage(WebDriver driver) {
         super(driver);
     }
-
+    /**
+     *  поле выбора периода детализации
+     */
     @FindBy(xpath = "//div[contains(@class,'fileds-row')]/div[contains(@id,'periodSelec')]//div[contains(@class,'ui-selectonemenu-trigger ui-state-default ui-corner-right')]")
     private WebElement periodSelect;
-
+    /**
+     *  поле ввода даты периода, при выбраном фильтре "За период"
+     */
     @FindBy(xpath = "//div[contains(@class,'fileds-row')]//div[contains(@id,'calendars')]//input")
     private WebElement calendarsInput;
-
+    /**
+     *  Кнопка "Обновить данные"
+     */
     @FindBy(xpath = "//div[contains(@class,'fileds-row')]//div[contains(@class,'refresh-data-button')]//button")
     private Button refreshDataButton;
-
+    /**
+     *  Кнопка "Сохранение отчета"
+     */
     @FindBy(xpath = "//div[contains(@class,'report-download-button')]/button")
     private Button reportDownloadButton;
-
+    /**
+     *  Ссылка "Обновить данные" для платежей
+     */
     @FindBy(xpath = "//div[contains(@class,'update-link-container')]//a")
     private Link updateLinkContainer;
-
+    /**
+     *  Ссылка "Выгрузить в Excel" для платежей
+     */
     @FindBy(xpath = "//div[@id='xlsExporter']/a")
     private Link xlsExporter;
-
-    @FindBy(xpath = "//div[contains(@id,'paymentsTable')]//table")
-    private Link paymentsTable;
-
+    /**
+     *  Список опций фильтра для платежей "Тип платежа"
+     */
     @FindBy(xpath = "//div[contains(@id,'paymentsTable')]//table//span[contains(text(),'Тип платежа')]//select/option")
     private List<WebElement> filterTypePayments;
-
+    /**
+     *  xPath к всплывающему календарю
+     */
     private String XPATH_DATE_POPUP = "//div[contains(@class,'datepick-popup')]";
-
+    /**
+     *  Метод проверяет отображение элементов на странице
+     */
     public void checkDisplayFinanceAndDetailPage(){
         if(!periodSelect.isEnabled())
             throw new FinanceAndDetailsException("Неотображается поле выбора периода");
@@ -57,11 +74,25 @@ public class FinanceAndDetailsPage extends BaseFinanceAndDetailsPage {
         if(!updateLinkContainer.isEnabled())
             throw new FinanceAndDetailsException("Неотображается ссылка \"Обновить данные\"");
         }
+    /**
+     *  Задать фильтр отображения детализации
+     *
+     *  @param period фильтр который нужно применить
+     */
     public void selectPeriod(String period){
         periodSelect.click();
         findBy("//div[contains(@class,'ui-selectonemenu-items-wrapper')]//li[contains(text(),'" + period + "')]").waitUntilVisible().click();
     }
-
+    /**
+     *  Отображает детализацию за указанный период
+     *
+     *  @param startDay день начала периода
+     *  @param startMount месяц начала периода
+     *  @param startYear год начала периода
+     *  @param endDay день конца периода
+     *  @param endMount месяц конца периода
+     *  @param endYear год конца периода
+     */
     public void setPeriod(int startDay, String startMount, String startYear, int endDay, String endMount, String endYear){
         selectPeriod("За период");
         shouldBeVisible(calendarsInput);
@@ -72,19 +103,33 @@ public class FinanceAndDetailsPage extends BaseFinanceAndDetailsPage {
         refreshDataButton.click();
         waitForAjaxComplete();
     }
+    /**
+     *
+     * @return список опций фильтра "Тип платежа"
+     */
     public List<String> getOptionsFilterTypePayments(){
         return extract(filterTypePayments, on(WebElement.class).getAttribute("text"));
     }
-
+    /**
+     * Задать фильтр по типу платежа
+     *
+     * @param typePayments тип платежа
+     */
     public void selectTypePayments(String typePayments){
         findBy("//div[contains(@id,'paymentsTable')]//table//span[contains(text(),'Тип платежа')]//div[contains(@class,'ui-selectonemenu-trigger ui-state-default ui-corner-right')]").waitUntilVisible().click();
         findBy("//div[contains(@class,'ui-selectonemenu-items-wrapper')]//li[contains(text(),'" + typePayments + "')]").waitUntilVisible().click();
         waitForAjaxComplete();
     }
-
+    /**
+     *
+     * @return количество строк в таблице платежей
+     */
     public int getCountRowsPayments(){
         return findAll("//tbody[contains(@id,'paymentsTable')]//tr[contains(@class,'ui-widget-content')]").size();
     }
+    /**
+     * @return список всех строк из таблицы платежей
+     */
     public List<RowPayments> getAllRowPayments(){
         List<RowPayments> res = new ArrayList<RowPayments>();
         int paymentCount = getCountRowsPayments();
@@ -92,21 +137,32 @@ public class FinanceAndDetailsPage extends BaseFinanceAndDetailsPage {
             res.add(new RowPayments(i));
         return res;
     }
+    /**
+     * Класс строки таблицы платежей
+     */
     public class RowPayments{
         private String xPathRowPayment;
+        /**
+         * @param index индекс строки в таблице (нумерация начинается с 0)
+         */
         public RowPayments(int index) {
             xPathRowPayment = "//tr[contains(@class,'ui-widget-content') and @data-ri='" + index + "']";
         }
+        /**
+         * @return тип платежа
+         */
         public String getTypePayments() {
             return findBy(xPathRowPayment + "/td[3]").getText();
         }
+        /**
+         * @return дата платежа
+         */
         public Date getDate() throws ParseException {
             String dateStr = findBy(xPathRowPayment + "/td[1]").getText();
             Date date = new SimpleDateFormat("d MMM yyyy HH:mm:ss").parse(dateStr);
             return date;
         }
     }
-
     private void setEndDate(int day, String mount, String year){
         String firstDate = getFirstMount();
         String lastDate = getLastMount();

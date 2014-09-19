@@ -17,7 +17,7 @@ import java.util.Map;
 
 @RunWith(ThucydidesRunner.class)
 @Story(USSS_6_0_Sanity.B2CPrepaid.ManageTariffPlans.class)
-public class ManageTariffTests {
+public class ManageTariffTest {
 
     @Managed
     public WebDriver webdriver;
