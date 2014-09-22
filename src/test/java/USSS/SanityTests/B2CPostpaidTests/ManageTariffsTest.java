@@ -19,7 +19,7 @@ import java.util.Map;
 
 @RunWith(ThucydidesRunner.class)
 @Story(USSS_6_0_Sanity.B2CPostpaid.ManageTariffPlans.class)
-public class ManageTariffsTests {
+public class ManageTariffsTest {
     @Managed
     public WebDriver webdriver;
 

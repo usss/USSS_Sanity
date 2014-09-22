@@ -128,6 +128,12 @@ public class ManageTariffsSteps extends AbstractB2CSteps {
         if(!currentTariff.contains(tariffName))
             throw new ChangeTariffException("Ошибка смены тарифа [" + currentTariff + "] на тариф [" + tariffName + "]");
     }
+    @Step
+    public void check_test(){
+        open_tariff_list();
+        TariffsPage tariffsListPage = getPages().get(TariffsPage.class);
+        tariffsListPage.navigationMenu.VerifyAllElements();
+    }
     @StepGroup
     public void change_tariff_and_check_change(String login, String password, String tariffName) throws SQLException, IOException, ClassNotFoundException, InterruptedException {
 

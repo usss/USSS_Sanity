@@ -1,6 +1,7 @@
 package USSS.pages.b2c;
 
-import USSS.blocks.HeaderFilterServices;
+
+import USSS.blocks.HeaderFilterServicesBlock;
 import USSS.pages.Exceptions.ConnectionSOCsException;
 import net.thucydides.core.pages.WebElementFacade;
 import org.openqa.selenium.NoSuchElementException;
@@ -15,20 +16,32 @@ import java.util.List;
 import static ch.lambdaj.Lambda.extract;
 import static ch.lambdaj.Lambda.on;
 
-
+/**
+ * Базовый pageObject страницы "Услуги" для B2C postpaid и B2C prepaid клиентов
+ */
 public class BaseServicesPage extends BlockPageObject {
     public BaseServicesPage(WebDriver driver) {
         super(driver);
     }
-
+    /**
+     * xPath к именам категорий
+     */
     private static final String XPATH_LIST_CATS = "//div[contains(@class,'item-cat')]/a/span";
-
+    /**
+     * Блок фильтра для услуг
+     */
     @FindBy(xpath = "//form[@id='filterForm']")
-    public HeaderFilterServices filterSOCs;
-
+    public HeaderFilterServicesBlock filterSOCs;
+    /**
+     * Список категорий
+     */
     @FindBy(xpath = XPATH_LIST_CATS)
     private List<WebElement> listCats;
-
+    /**
+     * Метод устанавливает фильтрацию услуг по категориям
+     *
+     * @param catsName список категорий, для которых checkBox установить в true
+     */
     public void selectCats(String... catsName){
         for (String cat : catsName ){
             String xPathItemCat = "//span[contains(text(),'" + cat + "')]//ancestor::div[contains(@class,'item-cat')]";
@@ -44,6 +57,11 @@ public class BaseServicesPage extends BlockPageObject {
             }
         }
     }
+    /**
+     * Метод устанавливает фильтрацию услуг по категориям
+     *
+     * @param catsName список категорий, для которых checkBox установить в false
+     */
     public void unSelectCats(String... catsName){
         for (String cat : catsName ){
             String xPathItemCat = "//span[contains(text(),'" + cat + "')]//ancestor::div[contains(@class,'item-cat')]";
@@ -59,9 +77,15 @@ public class BaseServicesPage extends BlockPageObject {
             }
         }
     }
+    /**
+     * @return список доступных категорий для фильтрации
+     */
     public List<String> getListCats(){
         return extract(listCats, on(WebElement.class).getText());
     }
+    /**
+     * @return список всех доступных услуг
+     */
     public List<String> getListServices(){
 
         String xPathListSOCs = "//div[contains(@class,'service-item')]//h2";
@@ -74,6 +98,9 @@ public class BaseServicesPage extends BlockPageObject {
         }
         return res;
     }
+    /**
+     * @return список доступных услуг, у которых активна кнопка включения
+     */
     public List<String> getListServicesSwitchTrue(){
 
         String xPathListSOCs = "//div[contains(@class,'service-item')]//div[contains(@class,'switch')]//button[@aria-disabled='false']//ancestor::div[contains(@class,'switch switch')]//following-sibling::div[contains(@class,'info')]//h2";
@@ -86,10 +113,20 @@ public class BaseServicesPage extends BlockPageObject {
         }
         return res;
     }
+    /**
+     * @param service имя услуги
+     *
+     * @return категория, к кторой принадлежит услуга
+     */
     public String getCategoryService(String service){
         setWaitForTimeout(15000);
         return findBy("//h2[contains(text(),'" + service + "')]//ancestor::div[contains(@class,'info')]//ancestor::div[contains(@class,'service-item')]//div[contains(@class,'categories')]/a").getText();
     }
+    /**
+     * Метод подключения услуги
+     *
+     * @param service имя услуги
+     */
     public void enableService(String service){
         setWaitForTimeout(15000);
 
@@ -113,6 +150,11 @@ public class BaseServicesPage extends BlockPageObject {
         }else
             throw new ConnectionSOCsException("Услуга ["  + service + "] присутствует в списке, но недоступна для подключения!");
     }
+    /**
+     * Метод отключения услуги
+     *
+     * @param service имя услуги
+     */
     public void disableService(String service){
         setWaitForTimeout(20000);
 

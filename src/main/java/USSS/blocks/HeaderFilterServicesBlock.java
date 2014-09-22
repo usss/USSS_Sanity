@@ -4,7 +4,7 @@ import org.openqa.selenium.support.FindBy;
 import ru.yandex.qatools.htmlelements.element.HtmlElement;
 import ru.yandex.qatools.htmlelements.element.Link;
 
-public class HeaderFilterServices extends HtmlElement {
+public class HeaderFilterServicesBlock extends HtmlElement implements Block{
 
     @FindBy(xpath = "//a[contains(@id,'filterForm')]//span[contains(text(), 'Все услуги')]")
     private Link allSOCs;
@@ -23,5 +23,12 @@ public class HeaderFilterServices extends HtmlElement {
     }
     public void openAvailableSOCs(){
         availableSOCs.click();
+    }
+
+    @Override
+    public void VerifyAllElements() {
+        allSOCs.isEnabled();
+        connectedSOCs.isEnabled();
+        availableSOCs.isEnabled();
     }
 }

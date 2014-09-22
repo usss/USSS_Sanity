@@ -15,13 +15,14 @@ import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Map;
 
 @RunWith(ThucydidesRunner.class)
 @Story(USSS_6_0_Sanity.B2CPrepaid.ViewingPayments.class)
 
-public class DisplayPaymentsTests {
+public class DisplayPaymentsTest {
     @Managed
     public WebDriver webdriver;
 
