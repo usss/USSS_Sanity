@@ -7,14 +7,14 @@ import ru.yandex.qatools.htmlelements.element.Form;
 import ru.yandex.qatools.htmlelements.element.HtmlElement;
 import ru.yandex.qatools.htmlelements.element.Link;
 import ru.yandex.qatools.htmlelements.element.TextBlock;
-
+import ru.yandex.qatools.htmlelements.element.Button;
 import java.awt.*;
 import java.util.List;
 
 /**
  * Created by KPodberezin on 19.09.2014.
  */
-public class FinInfoIndexBlock extends HtmlElement {
+public class FinInfoIndexBlock extends HtmlElement implements Block {
 
     /**
      * Форма
@@ -37,20 +37,20 @@ public class FinInfoIndexBlock extends HtmlElement {
     /**
      * Кнопка комбобокса выбора периода
      */
-    @FindBy(xpath = "//form[contains(@id, 'finInfoIndexPage')]//span[contains(@class,'ui-icon ui-icon-triangle-1-s')]")
+    @FindBy(xpath = "//span[contains(@class,'ui-icon ui-icon-triangle-1-s')]")
     private WebElement cbPeriodBtn;
 
     /**
      * Кнопка "Заказать детализацию"
      */
-    @FindBy(xpath = "//form[contains(@id, 'finInfoIndexPage')]//button[contains(@id,'finInfoIndexPage')]')]")
-    private WebElement btnGetDetail;
+    @FindBy(xpath = "//button[contains(@id,'finInfoIndexPage')]")
+    private Button btnGetDetail;
 
     /**
      * Ссылка "Ранее заказанные отчеты"
      */
-    @FindBy(xpath = "//form[contains(@id, 'finInfoIndexPage')]//a)")
-     private WebElement linkReportHistory;
+    @FindBy(xpath = "//a)")
+    private Link linkReportHistory;
 
 
     public void selectPeriod(String period) {
@@ -58,11 +58,22 @@ public class FinInfoIndexBlock extends HtmlElement {
         List<WebElement> cbElements = findElements(By.xpath("//form[contains(@id, 'finInfoIndexPage')]//button[contains(@id,'finInfoIndexPage')]"));
         for (WebElement wb : cbElements) {
             if (!wb.getText().contains(period)) {
-               // exeption;
+                // exeption;
             }
 
         }
     }
 
+    public void onClickBtnGetDetail() {
+        btnGetDetail.click();
+    }
 
+    public void onClickLinkGetHistoryDetail() {
+        linkReportHistory.click();
+    }
+
+    @Override
+    public void VerifyAllElements() {
+
+    }
 }

@@ -2,6 +2,7 @@ package USSS.pages.b2c;
 
 
 import USSS.blocks.BalanceBlock;
+import USSS.blocks.FinInfoIndexBlock;
 import USSS.blocks.NavigationMenuBlock;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
@@ -26,6 +27,9 @@ public class BaseProfilePage extends BlockPageObject {
     /**
      * @return Значение баланса в виде *.руб.
      */
+    @FindBy(xpath = "//form[contains(@id, 'finInfoIndexPage')]")
+    public FinInfoIndexBlock finInfoIndexBlock;
+
     public String getBalance(){
         setWaitForTimeout(15000);
         return/* findBy("//form[contains(@class,'profile-balance')]//span[contains(@class,'price')]").getText();*/balance.getBalance();

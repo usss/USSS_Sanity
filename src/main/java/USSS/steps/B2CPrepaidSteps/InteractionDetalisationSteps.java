@@ -2,6 +2,7 @@ package USSS.steps.B2CPrepaidSteps;
 
 import USSS.pages.Exceptions.DisplayTablePaymentsException;
 import USSS.pages.Exceptions.FinanceAndDetailsException;
+import USSS.pages.b2c.BaseRequestHistoryPage;
 import USSS.pages.b2c.prep.FinanceAndDetailsPage;
 import USSS.pages.b2c.prep.ProfilePage;
 import USSS.steps.AbstractB2CSteps;
@@ -106,6 +107,18 @@ public class InteractionDetalisationSteps extends AbstractB2CSteps {
     @Step
     public void check_upload_excel_file(){
         throw new UnsupportedOperationException("Метод не реализован");
+    }
+    @Step
+    public void view_details_and_view_history()
+    {
+        ProfilePage profilePage = getPages().get(ProfilePage.class);
+        profilePage.finInfoIndexBlock.onClickBtnGetDetail();
+        FinanceAndDetailsPage financeAndDetail = getPages().get(FinanceAndDetailsPage.class);
+        financeAndDetail.checkDisplayFinanceAndDetailPage();
+        financeAndDetail.navigationMenuBlock.openProfile();
+        profilePage = getPages().get(ProfilePage.class);
+        profilePage.finInfoIndexBlock.onClickLinkGetHistoryDetail();
+        BaseRequestHistoryPage  historyPage = getPages().get(BaseRequestHistoryPage.class);
     }
     @StepGroup
     public void check_filter_type_payments(){

@@ -21,6 +21,12 @@ public class FinDetailTable extends HtmlElement {
      */
     @FindBy(xpath = "//form[contains(@id, 'finInfoIndexPage')]//div[contains(@class,'balance-table')]/h3")
     private TextBlock tbHeadbalansTable;
+    /**
+     * Таблица "Ваши расходы"
+     */
+    @FindBy(xpath = "//form[contains(@id, 'finInfoIndexPage')]//div[contains(@class,'ui-datatable-tablewrapper')]")
+    private TextBlock tblBalans;
+
 
     /**
      * Надпись "Детализация оказанных услуг"

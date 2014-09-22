@@ -1,6 +1,9 @@
 package USSS.pages.b2c;
 
+import net.thucydides.core.annotations.findby.FindBy;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import ru.yandex.qatools.htmlelements.element.TextBlock;
 import ru.yandex.qatools.htmlelements.thucydides.BlockPageObject;
 /**
  * Базовый pageObject страницы "История запросов" для B2C postpaid и B2C prepaid клиентов
@@ -48,5 +51,19 @@ public class BaseRequestHistoryPage extends BlockPageObject {
         public String getStatus(){
             return findBy(xPathRequestLine + "//td[contains(@class,'status')]").getText();
         }
+
+
+        /**
+         * Фильтр истории запросов, номер
+         */
+        @FindBy(xpath = "//input[contains(@id, 'formRequest:requestsTable:requestId')]")
+        private WebElement tbNumberFiltr;
+
+        @FindBy(xpath = "//label[contains(@id, 'formRequest:requestsTable:requestTypeId_label')]")
+        private WebElement lbCurrentSelectTypeFiltr;
+
+        @FindBy(xpath = "//label[contains(@id, 'formRequest:requestsTable:requestStatus_label')]")
+        private WebElement lbCurrentSelectStatusFiltr;
+
     }
 }

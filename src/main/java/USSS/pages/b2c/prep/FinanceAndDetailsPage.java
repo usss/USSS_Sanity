@@ -1,5 +1,6 @@
 package USSS.pages.b2c.prep;
 
+import USSS.blocks.NavigationMenuBlock;
 import USSS.pages.Exceptions.FinanceAndDetailsException;
 import USSS.pages.b2c.BaseFinanceAndDetailsPage;
 import org.openqa.selenium.WebDriver;
@@ -8,6 +9,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import ru.yandex.qatools.htmlelements.element.Button;
 import ru.yandex.qatools.htmlelements.element.Link;
+import ru.yandex.qatools.htmlelements.element.Radio;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,6 +24,8 @@ public class FinanceAndDetailsPage extends BaseFinanceAndDetailsPage {
     public FinanceAndDetailsPage(WebDriver driver) {
         super(driver);
     }
+
+    public NavigationMenuBlock navigationMenuBlock;
     /**
      *  поле выбора периода детализации
      */
@@ -42,6 +46,21 @@ public class FinanceAndDetailsPage extends BaseFinanceAndDetailsPage {
      */
     @FindBy(xpath = "//div[contains(@class,'report-download-button')]/button")
     private Button reportDownloadButton;
+    /**
+     *  Радиобатон выбора PDF
+     */
+    @FindBy(xpath = "//input[contains(@value, 'PDF')]")
+    private Radio radioBtnSelectPdf;
+    /**
+     *  Радиобатон выбора XLS
+     */
+    @FindBy(xpath = "//input[contains(@value, 'XLS')]")
+    private Radio radioBtnSelectXls;
+    /**
+     *  Кнопка "Сохранить отчет"
+     */
+    @FindBy(xpath = "//button[contains(@id, 'finInfoIndexPage:centerColumnFilter:selector')]")
+    private Radio btnSaveReport;
     /**
      *  Ссылка "Обновить данные" для платежей
      */
