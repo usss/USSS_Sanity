@@ -58,4 +58,9 @@ public class ManageTariffTest {
         manageTariffsSteps.change_tariff_with_negative_balance(tariffName);
         manageTariffsSteps.logout();
     }
+    @Test
+    public void check_display_non_null_price_of_tariff_for_b2c_prepaid(){
+        manageTariffsSteps.authorization("sel_9687013119_pre","FRol370026vf");
+        manageTariffsSteps.check_test();
+    }
 }

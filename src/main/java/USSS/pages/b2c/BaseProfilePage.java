@@ -1,7 +1,8 @@
 package USSS.pages.b2c;
 
-import USSS.blocks.Balance;
-import USSS.blocks.NavigationMenu;
+
+import USSS.blocks.BalanceBlock;
+import USSS.blocks.NavigationMenuBlock;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import ru.yandex.qatools.htmlelements.thucydides.BlockPageObject;
@@ -16,12 +17,12 @@ public class BaseProfilePage extends BlockPageObject {
      * Блок для навигации по главному Меню
      */
     @FindBy(xpath = "//div[@class = 'header-inner']")
-    public NavigationMenu navigationMenu;
+    public NavigationMenuBlock navigationMenu;
     /**
      * Блок отображения баланса
      */
     @FindBy(xpath = "//form[contains(@class,'profile-balance')]")
-    public Balance balance;
+    public BalanceBlock balance;
     /**
      * @return Значение баланса в виде *.руб.
      */

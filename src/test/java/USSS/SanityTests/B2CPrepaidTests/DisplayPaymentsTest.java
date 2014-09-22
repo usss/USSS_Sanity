@@ -50,8 +50,4 @@ public class DisplayPaymentsTest {
         interactionDetalisationSteps.delete_filter_by_payment_type();
         interactionDetalisationSteps.check_upload_excel_file();
     }
-    @Test
-    public void test() throws SQLException, IOException, ClassNotFoundException {
-        interactionDetalisationSteps.e2e_null_transaction();
-    }
 }

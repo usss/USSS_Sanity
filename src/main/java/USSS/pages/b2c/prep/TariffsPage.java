@@ -64,5 +64,17 @@ public class TariffsPage extends BaseTariffsPage {
            }
        }
    }
+    /**
+     *
+     * @param tariffName Имя тарифа
+     *
+     * @return стоимость перехода на тариф
+     *
+     * @throws  TariffNotFoundException если тарифа нет в списке доступных
+     */
+    public String getPriceTariff(String tariffName){
+        //todo : не реализован
+       return "";
+    }
 
 }

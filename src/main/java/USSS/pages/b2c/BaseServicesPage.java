@@ -1,6 +1,7 @@
 package USSS.pages.b2c;
 
-import USSS.blocks.HeaderFilterServices;
+
+import USSS.blocks.HeaderFilterServicesBlock;
 import USSS.pages.Exceptions.ConnectionSOCsException;
 import net.thucydides.core.pages.WebElementFacade;
 import org.openqa.selenium.NoSuchElementException;
@@ -30,7 +31,7 @@ public class BaseServicesPage extends BlockPageObject {
      * Блок фильтра для услуг
      */
     @FindBy(xpath = "//form[@id='filterForm']")
-    public HeaderFilterServices filterSOCs;
+    public HeaderFilterServicesBlock filterSOCs;
     /**
      * Список категорий
      */

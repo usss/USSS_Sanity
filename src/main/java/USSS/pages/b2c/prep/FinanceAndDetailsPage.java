@@ -73,7 +73,7 @@ public class FinanceAndDetailsPage extends BaseFinanceAndDetailsPage {
             throw new FinanceAndDetailsException("Неотображается кнопка \"Сохранение отчета\"");
         if(!updateLinkContainer.isEnabled())
             throw new FinanceAndDetailsException("Неотображается ссылка \"Обновить данные\"");
-        }
+    }
     /**
      *  Задать фильтр отображения детализации
      *

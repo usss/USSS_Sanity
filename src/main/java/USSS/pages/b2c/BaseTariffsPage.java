@@ -1,6 +1,6 @@
 package USSS.pages.b2c;
 
-import USSS.blocks.NavigationMenu;
+import USSS.blocks.NavigationMenuBlock;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -22,7 +22,7 @@ public class BaseTariffsPage extends BlockPageObject {
      * Блок для навигации по главному Меню
      */
     @FindBy(xpath = "//div[@class = 'header-inner']")
-    public NavigationMenu navigationMenu;
+    public NavigationMenuBlock navigationMenu;
     /**
      * Текстовый блок содержащий имя текущего тарифа
      */

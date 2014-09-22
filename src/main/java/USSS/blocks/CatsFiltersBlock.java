@@ -11,7 +11,7 @@ import java.util.List;
 import static ch.lambdaj.Lambda.extract;
 import static ch.lambdaj.Lambda.on;
 
-public class CatsFilters extends HtmlElement {
+public class CatsFiltersBlock extends HtmlElement implements Block{
 
     private static final String xPathListCats = "//div[contains(@class,'item-cat')]/a/span";
 
@@ -47,4 +47,8 @@ public class CatsFilters extends HtmlElement {
         return extract(listCats, on(WebElement.class).getText());
     }
 
+    @Override
+    public void VerifyAllElements() {
+        //todo
+    }
 }

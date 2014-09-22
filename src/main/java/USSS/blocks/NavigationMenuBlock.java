@@ -4,12 +4,12 @@ import org.openqa.selenium.support.FindBy;
 import ru.yandex.qatools.htmlelements.element.HtmlElement;
 import ru.yandex.qatools.htmlelements.element.Link;
 
-public class NavigationMenu extends HtmlElement {
+public class NavigationMenuBlock extends HtmlElement implements Block {
 
     @FindBy(xpath = "//a[@name='preProfile']")
     private Link profileLink;
 
-    @FindBy(xpath = "//form[@id='noticeInHeader']/a")
+    @FindBy(xpath = "//form[@id='noticeInHeader1']/a")
     private Link noticeLink;
 
     @FindBy(xpath = "//li[contains(@class,'nav-settings')]/a")
@@ -71,5 +71,20 @@ public class NavigationMenu extends HtmlElement {
     }
     public void logOut(){
         loqOut.click();
+    }
+
+    @Override
+    public void VerifyAllElements() {
+        profileLink.isEnabled();
+        noticeLink.isEnabled();
+        settingsLink.isEnabled();
+        tariffsLink.isEnabled();
+        socsLink.isEnabled();
+        financeLink.isEnabled();
+        sharedInternetLink.isEnabled();
+        historyRequestLink.isEnabled();
+        helpAndFeedbackLink.isEnabled();
+        paymentLink.isEnabled();
+        loqOut.isEnabled();
     }
 }
