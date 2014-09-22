@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Map;
 
@@ -34,12 +35,12 @@ public class DisplayPaymentsTest {
     @Test
     public void check_display_payments_b2c_post() throws IOException, ParseException {
 
-        Map<String,String> settings = SettingsTests.getParametersForTest("check_display_payments_b2c_post");
+        Map<String, String> settings = SettingsTests.getParametersForTest("check_display_payments_b2c_post");
 
         String login = settings.get("LoginUser");
         String password = settings.get("PasswordUser");
-        String startDate =  settings.get("StartDate");
-        String endDate =  settings.get("EndDate");
+        String startDate = settings.get("StartDate");
+        String endDate = settings.get("EndDate");
 
         interactionDetalisationSteps.authorization(login, password);
         interactionDetalisationSteps.open_finance_and_details_page_and_check_page();
@@ -48,5 +49,4 @@ public class DisplayPaymentsTest {
         interactionDetalisationSteps.check_filter_type_payments();
         interactionDetalisationSteps.check_upload_excel_file();
     }
-
 }
