@@ -6,7 +6,6 @@ import ru.yandex.qatools.htmlelements.element.HtmlElement;
 import ru.yandex.qatools.htmlelements.element.Link;
 
 public class BalanceBlock extends HtmlElement implements Block {
-
     /**
      * Текстовый блок баланса
      */

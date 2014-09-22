@@ -79,6 +79,7 @@ public class InteractionDetalisationSteps extends AbstractB2CSteps {
     @Step
     public void check_display_table_with_filter_by_type_payments(String typePayments){
         FinanceAndDetailsPage financeAndDetail = getPages().get(FinanceAndDetailsPage.class);
+
         List<FinanceAndDetailsPage.RowPayments> listRowsPayment =  financeAndDetail.getAllRowPayments();
 
         for (FinanceAndDetailsPage.RowPayments rowPayments : listRowsPayment) {
