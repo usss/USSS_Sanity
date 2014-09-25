@@ -46,6 +46,10 @@ public class OfflineDetailTest {
 
         interactionDetalisationSteps.authorization(login, password);
         interactionDetalisationSteps.view_details_and_view_history();
-
+        interactionDetalisationSteps.view_details_and_comfirm_period();
+        interactionDetalisationSteps.select_detalisation_for_today();
+        interactionDetalisationSteps.select_detalisation_for_last_week();
+        interactionDetalisationSteps.select_detalisation_for_last_month();
+        interactionDetalisationSteps.select_detalisation_for_period(startDate,endDate);
     }
 }

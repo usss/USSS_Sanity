@@ -1,8 +1,9 @@
 package USSS.blocks;
 
-import net.thucydides.core.annotations.findby.FindBy;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import ru.yandex.qatools.htmlelements.element.Form;
 import ru.yandex.qatools.htmlelements.element.HtmlElement;
 import ru.yandex.qatools.htmlelements.element.Link;
@@ -49,7 +50,7 @@ public class FinInfoIndexBlock extends HtmlElement implements Block {
     /**
      * Ссылка "Ранее заказанные отчеты"
      */
-    @FindBy(xpath = "//a)")
+    @FindBy(xpath = "//a")
     private Link linkReportHistory;
 
 

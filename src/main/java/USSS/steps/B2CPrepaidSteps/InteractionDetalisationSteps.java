@@ -29,6 +29,11 @@ public class InteractionDetalisationSteps extends AbstractB2CSteps {
         financeAndDetail.selectPeriod("За последнюю неделю");
     }
     @Step
+    public void select_detalisation_for_last_month(){
+        FinanceAndDetailsPage financeAndDetail = getPages().get(FinanceAndDetailsPage.class);
+        financeAndDetail.selectPeriod("За последний месяц");
+    }
+    @Step
     public void select_detalisation_for_period(String startDate, String endDate){
         FinanceAndDetailsPage financeAndDetail = getPages().get(FinanceAndDetailsPage.class);
 
@@ -119,6 +124,15 @@ public class InteractionDetalisationSteps extends AbstractB2CSteps {
         profilePage = getPages().get(ProfilePage.class);
         profilePage.finInfoIndexBlock.onClickLinkGetHistoryDetail();
         BaseRequestHistoryPage  historyPage = getPages().get(BaseRequestHistoryPage.class);
+    }
+    @Step
+    public void view_details_and_comfirm_period()
+    {
+        ProfilePage profilePage = getPages().get(ProfilePage.class);
+        profilePage.finInfoIndexBlock.onClickBtnGetDetail();
+        FinanceAndDetailsPage financeAndDetail = getPages().get(FinanceAndDetailsPage.class);
+        financeAndDetail.checkDisplayFinanceAndDetailPage();
+
     }
     @StepGroup
     public void check_filter_type_payments(){
