@@ -4,19 +4,21 @@ import USSS.blocks.NavigationMenuBlock;
 import USSS.pages.Exceptions.FinanceAndDetailsException;
 import USSS.pages.b2c.BaseFinanceAndDetailsPage;
 import net.thucydides.core.pages.WebElementFacade;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.browserlaunchers.Sleeper;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import ru.yandex.qatools.htmlelements.element.Button;
 import ru.yandex.qatools.htmlelements.element.Link;
 import ru.yandex.qatools.htmlelements.element.Radio;
-import ru.yandex.qatools.htmlelements.element.HtmlElement;
 
-import java.lang.reflect.Array;
+import java.io.FileOutputStream;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -51,23 +53,19 @@ public class FinanceAndDetailsPage extends BaseFinanceAndDetailsPage {
     /**
      * Кнопка "Сохранение отчета"
      */
-    @FindBy(xpath = "//div[contains(@class,'report-download-button')]/button")
+    @FindBy(xpath = "//div[contains(@class,'submit-or-cancel')]/button")
     private Button reportDownloadButton;
     /**
      * Радиобатон выбора PDF
      */
     @FindBy(xpath = "//input[contains(@value, 'PDF')]")
-    private Radio radioBtnSelectPdf;
+    private Button radioBtnSelectPdf;
     /**
      * Радиобатон выбора XLS
      */
     @FindBy(xpath = "//input[contains(@value, 'XLS')]")
-    private Radio radioBtnSelectXls;
-    /**
-     * Кнопка "Сохранить отчет"
-     */
-    @FindBy(xpath = "//button[contains(@id, 'finInfoIndexPage:centerColumnFilter:selector')]")
-    private Radio btnSaveReport;
+    private Button radioBtnSelectXls;
+
     /**
      * Ссылка "Обновить данные" для платежей
      */
@@ -79,14 +77,25 @@ public class FinanceAndDetailsPage extends BaseFinanceAndDetailsPage {
     @FindBy(xpath = "//div[@id='xlsExporter']/a")
     private Link xlsExporter;
     /**
+     * Кнопка "Сохранить отчет"
+     */
+    @FindBy(xpath = "//div[contains(@class,'report-download-button')]/button")
+    private Button btnSaveReport;
+    /**
      * Список опций фильтра для платежей "Тип платежа"
      */
+
     @FindBy(xpath = "//div[contains(@id,'paymentsTable')]//table//span[contains(text(),'Тип платежа')]//select/option")
     private List<WebElement> filterTypePayments;
     /**
      * xPath к всплывающему календарю
      */
     private String XPATH_DATE_POPUP = "//div[contains(@class,'datepick-popup')]";
+    /**
+     * Ссылка на файл
+     */
+    @FindBy(xpath = "//a[contains(text(),'Отчет ')]")
+    public Link fileDownload;
 
     /**
      * Метод проверяет отображение элементов на странице
@@ -96,14 +105,19 @@ public class FinanceAndDetailsPage extends BaseFinanceAndDetailsPage {
             throw new FinanceAndDetailsException("Неотображается поле выбора периода");
         if (!refreshDataButton.isEnabled())
             throw new FinanceAndDetailsException("Неотображается кнопка \"Обновить данные\"");
-        if (!reportDownloadButton.isEnabled())
-            throw new FinanceAndDetailsException("Неотображается кнопка \"Сохранение отчета\"");
+//        if (!reportDownloadButton.isEnabled())
+       //     throw new FinanceAndDetailsException("Неотображается кнопка \"Сохранение отчета\"");
         if (!updateLinkContainer.isEnabled())
             throw new FinanceAndDetailsException("Неотображается ссылка \"Обновить данные\"");
        // if (!confirmPeriodOptions())
       //  {
        //     throw new FinanceAndDetailsException("Неверное отображение выбора периода");
        // }
+    }
+
+    public void checkSaveReport(){
+        btnSaveReport.click();
+        waitFor("//div[contains(@class,'offer-popup-inner details-format-selector')]");
     }
 
     /**
@@ -139,6 +153,19 @@ public class FinanceAndDetailsPage extends BaseFinanceAndDetailsPage {
         waitForAjaxComplete();
     }
 
+    public void btnDowloadReportClick(){
+
+
+        reportDownloadButton.click();
+        waitFor("//span[contains(text(),'Готово')]");
+
+    }
+
+    public void clickLinkDownloadFileReport() throws IOException {
+        waitFor("//a[contains(text(),'Отчет ')]");
+        fileDownload.click();
+
+    }
     /**
      * @return список опций фильтра "Тип платежа"
      */
@@ -173,6 +200,9 @@ public class FinanceAndDetailsPage extends BaseFinanceAndDetailsPage {
         for (int i = 0; i < paymentCount; i++)
             res.add(new RowPayments(i));
         return res;
+    }
+    public void  setRadioBtnSelectPdf() {
+        radioBtnSelectXls.click();
     }
 
     /**

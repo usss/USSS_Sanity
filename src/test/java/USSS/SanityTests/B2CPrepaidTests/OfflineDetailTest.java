@@ -37,12 +37,14 @@ public class OfflineDetailTest {
     @Test
     public void check_display_payments_b2c_prep() throws IOException, ParseException {
 
-        Map<String,String> settings = SettingsTests.getParametersForTest("check_display_payments_b2c_prep");
+        Map<String, String> settings = SettingsTests.getParametersForTest("check_display_payments_b2c_prep");
 
         String login = settings.get("LoginUser");
         String password = settings.get("PasswordUser");
-        String startDate =  settings.get("StartDate");
-        String endDate =  settings.get("EndDate1");
+        String startDate = settings.get("StartDate");
+        String endDate = settings.get("EndDate");
+     //   String startDateMax = settings.get("StartDateMax");
+      //  String endDateMax = settings.get("EndDateMax");
 
         interactionDetalisationSteps.authorization(login, password);
         interactionDetalisationSteps.view_details_and_view_history();
@@ -50,6 +52,8 @@ public class OfflineDetailTest {
         interactionDetalisationSteps.select_detalisation_for_today();
         interactionDetalisationSteps.select_detalisation_for_last_week();
         interactionDetalisationSteps.select_detalisation_for_last_month();
-        interactionDetalisationSteps.select_detalisation_for_period(startDate,endDate);
+       // interactionDetalisationSteps.select_detalisation_for_period(startDateMax, endDateMax);
+        interactionDetalisationSteps.select_detalisation_for_period(startDate, endDate);
+        interactionDetalisationSteps.view_page_save_report();
     }
 }

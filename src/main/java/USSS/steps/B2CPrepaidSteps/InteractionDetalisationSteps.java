@@ -9,6 +9,8 @@ import USSS.steps.AbstractB2CSteps;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.annotations.StepGroup;
 import net.thucydides.core.pages.Pages;
+
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -133,7 +135,16 @@ public class InteractionDetalisationSteps extends AbstractB2CSteps {
         profilePage.finInfoIndexBlock.onClickBtnGetDetail();
         FinanceAndDetailsPage financeAndDetail = getPages().get(FinanceAndDetailsPage.class);
         financeAndDetail.checkDisplayFinanceAndDetailPage();
+    }
+    @Step
+    public void view_page_save_report() throws IOException {
 
+        FinanceAndDetailsPage financeAndDetail = getPages().get(FinanceAndDetailsPage.class);
+        financeAndDetail.checkSaveReport();
+        financeAndDetail.setRadioBtnSelectPdf();
+        financeAndDetail.btnDowloadReportClick();
+
+        financeAndDetail.clickLinkDownloadFileReport();
     }
     @StepGroup
     public void check_filter_type_payments(){

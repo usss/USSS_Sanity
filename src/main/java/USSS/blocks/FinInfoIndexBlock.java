@@ -75,6 +75,6 @@ public class FinInfoIndexBlock extends HtmlElement implements Block {
 
     @Override
     public void VerifyAllElements() {
-
+        //todo
     }
 }
