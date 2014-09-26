@@ -43,7 +43,7 @@ public class OfflineDetailTest {
         String password = settings.get("PasswordUser");
         String startDate = settings.get("StartDate");
         String endDate = settings.get("EndDate");
-     //   String startDateMax = settings.get("StartDateMax");
+        String startDateMax = settings.get("StartDateMax");//удали
       //  String endDateMax = settings.get("EndDateMax");
 
         interactionDetalisationSteps.authorization(login, password);
