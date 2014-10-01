@@ -15,6 +15,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 
+import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Map;
@@ -37,7 +39,7 @@ public class OfflineDetailTest {
     InteractionDetalisationSteps interactionDetalisationSteps;
 
     @Test
-    public void check_display_payments_b2c_prep() throws IOException, ParseException {
+    public void check_display_payments_b2c_prep() throws IOException, ParseException, AWTException {
 
         Map<String, String> settings = SettingsTests.getParametersForTest("check_display_payments_b2c_prep");
 
@@ -51,11 +53,14 @@ public class OfflineDetailTest {
         interactionDetalisationSteps.authorization(login, password);
         interactionDetalisationSteps.view_details_and_view_history();
         interactionDetalisationSteps.view_details_and_comfirm_period();
-        interactionDetalisationSteps.select_deяtalisation_for_today();
+        interactionDetalisationSteps.select_detalisation_for_today();
         interactionDetalisationSteps.select_detalisation_for_last_week();
         interactionDetalisationSteps.select_detalisation_for_last_month();
        // interactionDetalisationSteps.select_detalisation_for_period(startDateMax, endDateMax);
         interactionDetalisationSteps.select_detalisation_for_period(startDate, endDate);
         interactionDetalisationSteps.view_page_save_report();
+        Robot robot = new Robot();
+        robot.keyPress(KeyEvent.VK_ENTER);
+        robot.keyRelease(KeyEvent.VK_ENTER);
     }
 }
