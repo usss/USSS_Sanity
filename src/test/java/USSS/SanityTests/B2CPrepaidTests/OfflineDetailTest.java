@@ -12,6 +12,8 @@ import net.thucydides.junit.runners.ThucydidesRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -43,7 +45,7 @@ public class OfflineDetailTest {
         String password = settings.get("PasswordUser");
         String startDate = settings.get("StartDate");
         String endDate = settings.get("EndDate");
-        String startDateMax = settings.get("StartDateMax");//удали
+      //  String startDateMax = settings.get("StartDateMax");
       //  String endDateMax = settings.get("EndDateMax");
 
         interactionDetalisationSteps.authorization(login, password);

@@ -202,7 +202,7 @@ public class FinanceAndDetailsPage extends BaseFinanceAndDetailsPage {
         return res;
     }
     public void  setRadioBtnSelectPdf() {
-        radioBtnSelectXls.click();
+        radioBtnSelectPdf.click();
     }
 
     /**
